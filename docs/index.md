@@ -72,7 +72,7 @@ connection "prismacloud" {
 
   # Required: URL of the Prisma Cloud instance excluding the protocol.
   # https://pan.dev/prismacloud-cloud/api/cspm/api-urls/
-  url = "api.anz.prismacloudcloud.io"
+  url = "api.anz.prismacloud.io"
 
   # 1. Using username, password authentication
   # Username for authentication.
