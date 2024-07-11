@@ -1,4 +1,4 @@
-package prisma
+package prismacloud
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 
 func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "prisma_policy",
+		Name:        "prismacloud_policy",
 		Description: "List of available policies in Prisma Cloud.",
 		Get: &plugin.GetConfig{
 			Hydrate:    getPrismaPolicy,
@@ -183,13 +183,13 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 func listPrismaPolicies(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_policy.listPrismaPolicies", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.listPrismaPolicies", "connection_error", err)
 		return nil, err
 	}
 
 	policies, err := policy.List(conn, nil)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_policy.listPrismaPolicies", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.listPrismaPolicies", "api_error", err)
 		return nil, err
 	}
 
@@ -217,13 +217,13 @@ func getPrismaPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_policy.getPrismaPolicy", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.getPrismaPolicy", "connection_error", err)
 		return nil, err
 	}
 
 	policy, err := policy.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_policy.getPrismaPolicy", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.getPrismaPolicy", "api_error", err)
 		return nil, err
 	}
 

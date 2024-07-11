@@ -1,4 +1,4 @@
-package prisma
+package prismacloud
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 
 func tablePrismaUser(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "prisma_user",
+		Name:        "prismacloud_user",
 		Description: "List all available users and service accounts.",
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaUsers,
@@ -144,13 +144,13 @@ func tablePrismaUser(ctx context.Context) *plugin.Table {
 func listPrismaUsers(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_user.listPrismaUsers", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_user.listPrismaUsers", "connection_error", err)
 		return nil, err
 	}
 
 	users, err := profile.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_user.listPrismaUsers", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_user.listPrismaUsers", "api_error", err)
 		return nil, err
 	}
 

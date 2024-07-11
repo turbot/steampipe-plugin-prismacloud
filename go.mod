@@ -1,4 +1,4 @@
-module github.com/turbot/steampipe-plugin-prisma
+module github.com/turbot/steampipe-plugin-prismacloud
 
 go 1.21.4
 

@@ -1,4 +1,4 @@
-package prisma
+package prismacloud
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 
 func tablePrismaAccount(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "prisma_account",
+		Name:        "prismacloud_account",
 		Description: "List all cloud accounts onboarded onto the Prisma Cloud platform.",
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaAccounts,
@@ -116,13 +116,13 @@ func tablePrismaAccount(ctx context.Context) *plugin.Table {
 func listPrismaAccounts(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_account.listPrismaAccounts", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_account.listPrismaAccounts", "connection_error", err)
 		return nil, err
 	}
 
 	accounts, err := account.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_account.listPrismaAccounts", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_account.listPrismaAccounts", "api_error", err)
 		return nil, err
 	}
 
@@ -147,13 +147,13 @@ func getAccountDetails(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_account.getAccountDetails", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_account.getAccountDetails", "connection_error", err)
 		return nil, err
 	}
 
 	account, err := account.Get(conn, accountData.CloudType, accountData.AccountId)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_account.getAccountDetails", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_account.getAccountDetails", "api_error", err)
 		return nil, err
 	}
 

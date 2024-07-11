@@ -1,10 +1,10 @@
-package prisma
+package prismacloud
 
 import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 )
 
-type prismaCloudConfig struct {
+type prismacloudCloudConfig struct {
 	Url                     *string         `hcl:"url"`
 	Username                *string         `hcl:"username,optional"`
 	Password                *string         `hcl:"password,optional"`
@@ -22,14 +22,14 @@ type prismaCloudConfig struct {
 }
 
 func ConfigInstance() interface{} {
-	return &prismaCloudConfig{}
+	return &prismacloudCloudConfig{}
 }
 
 // GetConfig :: retrieve and cast connection config from query data
-func GetConfig(connection *plugin.Connection) prismaCloudConfig {
+func GetConfig(connection *plugin.Connection) prismacloudCloudConfig {
 	if connection == nil || connection.Config == nil {
-		return prismaCloudConfig{}
+		return prismacloudCloudConfig{}
 	}
-	config, _ := connection.Config.(prismaCloudConfig)
+	config, _ := connection.Config.(prismacloudCloudConfig)
 	return config
 }

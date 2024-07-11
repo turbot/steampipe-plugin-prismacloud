@@ -1,13 +1,13 @@
 ---
 organization: Turbot
 category: ["software development"]
-icon_url: "/images/plugins/turbot/prisma.svg"
+icon_url: "/images/plugins/turbot/prismacloud.svg"
 brand_color: "#EF5B0C"
-display_name: "Prisma"
-short_name: "prisma"
+display_name: "Prisma Cloud"
+short_name: "prismacloud"
 description: "Steampipe plugin for querying Prisma Cloud Accounts, Users, and other resources."
 og_description: "Use SQL to query accounts, users, reports and more from Prisma Cloud. Open source CLI. No DB required."
-og_image: "/images/plugins/turbot/prisma-social-graphic.png"
+og_image: "/images/plugins/turbot/prismacloud-social-graphic.png"
 engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
 
@@ -15,7 +15,7 @@ engines: ["steampipe", "sqlite", "postgres", "export"]
 
 [Steampipe](https://steampipe.io) is an open-source platform that allows you to query cloud APIs using SQL.
 
-[Prisma Cloud](https://www.paloaltonetworks.com/prisma/cloud) is a comprehensive cloud security solution by Palo Alto Networks that provides protection across the entire cloud-native technology stack.
+[Prisma Cloud](https://www.paloaltonetworks.com/prismacloud/cloud) is a comprehensive cloud security solution by Palo Alto Networks that provides protection across the entire cloud-native technology stack.
 
 For example:
 
@@ -26,7 +26,7 @@ select
   compliance_standard_id,
   status
 from
-  prisma_report;
+  prismacloud_report;
 ```
 
 ```
@@ -41,7 +41,7 @@ from
 
 ## Documentation
 
-- **[Table definitions & examples →](https://hub.steampipe.io/plugins/turbot/prisma/tables)**
+- **[Table definitions & examples →](https://hub.steampipe.io/plugins/turbot/prismacloud/tables)**
 
 ## Get started
 
@@ -50,29 +50,29 @@ from
 Download and install the latest Prisma plugin:
 
 ```bash
-steampipe plugin install prisma
+steampipe plugin install prismacloud
 ```
 
 ### Credentials
 
-| Item        | Description|
-|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Credentials | The Prisma plugin uses a URL and either username/password or a JSON Web Token (JWT) to authenticate to the Prisma APIs.
-| Permissions | You must create a [Prisma Cloud account](https://docs.paloaltonetworks.com/prisma/prisma-cloud/prisma-cloud-admin/get-started-with-prisma-cloud-access/get-started-with-prisma-cloud-identity-and-access-management/manage-access-to-prisma-cloud.html) with the necessary permissions to query the API.
-| Radius      | The Prisma plugin query scope is generally the same as the Prisma API. You can list resources and details that you have access to within your Prisma Cloud account.
-| Resolution  | Credentials in the Steampipe configuration file (`~/.steampipe/config/prisma.spc`)
+| Item        | Description                                                                                                                                                                                                                                                                                                                            |
+| ----------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Credentials | The Prisma plugin uses a URL and either username/password or a JSON Web Token (JWT) to authenticate to the Prisma APIs.                                                                                                                                                                                                                |
+| Permissions | You must create a [Prisma Cloud account](https://docs.paloaltonetworks.com/prismacloud/prismacloud-cloud/prismacloud-cloud-admin/get-started-with-prismacloud-cloud-access/get-started-with-prismacloud-cloud-identity-and-access-management/manage-access-to-prismacloud-cloud.html) with the necessary permissions to query the API. |
+| Radius      | The Prisma plugin query scope is generally the same as the Prisma API. You can list resources and details that you have access to within your Prisma Cloud account.                                                                                                                                                                    |
+| Resolution  | Credentials in the Steampipe configuration file (`~/.steampipe/config/prismacloud.spc`)                                                                                                                                                                                                                                                |
 
 ### Configuration
 
-Installing the latest prisma plugin will create a config file (`~/.steampipe/config/prisma.spc`) with a single connection named `prisma`:
+Installing the latest prismacloud plugin will create a config file (`~/.steampipe/config/prismacloud.spc`) with a single connection named `prismacloud`:
 
 ```hcl
-connection "prisma" {
-  plugin = "prisma"
+connection "prismacloud" {
+  plugin = "prismacloud"
 
   # Required: URL of the Prisma Cloud instance excluding the protocol.
-  # https://pan.dev/prisma-cloud/api/cspm/api-urls/
-  url = "api.anz.prismacloud.io"
+  # https://pan.dev/prismacloud-cloud/api/cspm/api-urls/
+  url = "api.anz.prismacloudcloud.io"
 
   # 1. Using username, password authentication
   # Username for authentication.
@@ -120,7 +120,7 @@ connection "prisma" {
 }
 ```
 
-- `url` - The URL of the Prisma Cloud instance excluding the protocol (e.g., `api.anz.prismacloud.io`).
+- `url` - The URL of the Prisma Cloud instance excluding the protocol (e.g., `api.anz.prismacloudcloud.io`).
 - `username` - The username for authentication to the Prisma Cloud API.
 - `password` - The password for authentication to the Prisma Cloud API.
 - `token` - The JSON Web Token (JWT) for authentication to the Prisma Cloud API.

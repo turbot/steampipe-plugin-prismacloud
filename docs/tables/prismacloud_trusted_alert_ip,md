@@ -1,15 +1,15 @@
 ---
-title: "Steampipe Table: prisma_trusted_alert_ip - Query Prisma Cloud trusted alert IPs using SQL"
+title: "Steampipe Table: prismacloud_trusted_alert_ip - Query Prisma Cloud trusted alert IPs using SQL"
 description: "Allows users to query Prisma Cloud trusted alert IPs. This table provides information about each trusted alert IP, including its name, CIDR blocks, and more. It can be used to monitor and manage trusted alert IPs within Prisma Cloud."
 ---
 
-# Table: prisma_trusted_alert_ip - Query Prisma Cloud trusted alert IPs using SQL
+# Table: prismacloud_trusted_alert_ip - Query Prisma Cloud trusted alert IPs using SQL
 
 The Prisma Cloud trusted alert IP table in Steampipe provides you with information about trusted alert IPs within Prisma Cloud. This table allows you, as a security engineer or cloud administrator, to query trusted alert IP-specific details, including the name, CIDR blocks, and more. You can utilize this table to gather insights on trusted alert IPs, such as their configurations and associated details. The schema outlines the various attributes of the Prisma Cloud trusted alert IP for you, including the trusted alert IP's name, CIDR blocks, and unique identifier.
 
 ## Table Usage Guide
 
-The `prisma_trusted_alert_ip` table in Steampipe provides information about trusted alert IPs within Prisma Cloud. This table allows you to query details such as the trusted alert IP's name, CIDR blocks, and more, enabling you to manage and monitor your trusted alert IPs effectively.
+The `prismacloud_trusted_alert_ip` table in Steampipe provides information about trusted alert IPs within Prisma Cloud. This table allows you to query details such as the trusted alert IP's name, CIDR blocks, and more, enabling you to manage and monitor your trusted alert IPs effectively.
 
 ## Examples
 
@@ -22,7 +22,7 @@ select
   cidr_count,
   uuid
 from
-  prisma_trusted_alert_ip;
+  prismacloud_trusted_alert_ip;
 ```
 
 ```sql+sqlite
@@ -31,7 +31,7 @@ select
   cidr_count,
   uuid
 from
-  prisma_trusted_alert_ip;
+  prismacloud_trusted_alert_ip;
 ```
 
 ### Detailed CIDR Info
@@ -45,7 +45,7 @@ select
   c ->> 'CreatedOn' as create_time_in_ms,
   c ->> 'Description' as description
 from
-  prisma_trusted_alert_ip,
+  prismacloud_trusted_alert_ip,
   jsonb_array_elements(cidrs) as c;
 ```
 
@@ -57,7 +57,7 @@ select
   json_extract(c.value, '$.CreatedOn') as create_time_in_ms,
   json_extract(c.value, '$.Description') as description
 from
-  prisma_trusted_alert_ip,
+  prismacloud_trusted_alert_ip,
   json_each(cidrs) as c;
 ```
 
@@ -70,7 +70,7 @@ select
   uuid,
   cidr_count
 from
-  prisma_trusted_alert_ip
+  prismacloud_trusted_alert_ip
 where
   name = 'example_name';
 ```
@@ -81,7 +81,7 @@ select
   uuid,
   cidr_count
 from
-  prisma_trusted_alert_ip
+  prismacloud_trusted_alert_ip
 where
   name = 'example_name';
 ```
@@ -94,7 +94,7 @@ select
   name,
   cidr_count
 from
-  prisma_trusted_alert_ip;
+  prismacloud_trusted_alert_ip;
 ```
 
 ```sql+sqlite
@@ -102,5 +102,5 @@ select
   name,
   cidr_count
 from
-  prisma_trusted_alert_ip;
+  prismacloud_trusted_alert_ip;
 ```

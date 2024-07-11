@@ -1,24 +1,24 @@
-package prisma
+package prismacloud
 
 import (
 	"context"
 
-	"github.com/paloaltonetworks/prisma-cloud-go/permission_group"
+	resource "github.com/paloaltonetworks/prisma-cloud-go/resource-list"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaPermissionGroup(ctx context.Context) *plugin.Table {
+func tablePrismaResource(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "prisma_permission_group",
-		Description: "List of available permission groups.",
+		Name:        "prismacloud_resource",
+		Description: "List of available resources in Prisma Cloud.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaPermissionGroup,
+			Hydrate:    getPrismaResource,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaPermissionGroups,
+			Hydrate: listPrismaResources,
 		},
 		Columns: []*plugin.Column{
 			{
@@ -102,22 +102,22 @@ func tablePrismaPermissionGroup(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaPermissionGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismaResources(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_permission_group.listPrismaPermissionGroups", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_resource.listPrismaResources", "connection_error", err)
 		return nil, err
 	}
 
-	permissions, err := permission_group.List(conn)
+	resources, err := resource.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_permission_group.listPrismaPermissionGroups", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_resource.listPrismaResources", "api_error", err)
 		return nil, err
 	}
 
-	for _, permission := range permissions {
+	for _, resource := range resources {
 
-		d.StreamListItem(ctx, permission)
+		d.StreamListItem(ctx, resource)
 
 		// Context can be cancelled due to manual cancellation or the limit has been hit
 		if d.RowsRemaining(ctx) == 0 {
@@ -131,7 +131,7 @@ func listPrismaPermissionGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 
 //// HYDRATE FUNCTION
 
-func getPrismaPermissionGroup(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismaResource(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("id")
 
 	// Empty check
@@ -141,15 +141,15 @@ func getPrismaPermissionGroup(ctx context.Context, d *plugin.QueryData, h *plugi
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_permission_group.getPrismaPermissionGroup", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_resource.getPrismaResource", "connection_error", err)
 		return nil, err
 	}
 
-	permission, err := permission_group.Get(conn, id)
+	resource, err := resource.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_permission_group.getPrismaPermissionGroup", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_resource.getPrismaResource", "api_error", err)
 		return nil, err
 	}
 
-	return permission, nil
+	return resource, nil
 }

@@ -1,4 +1,4 @@
-package prisma
+package prismacloud
 
 import (
 	"context"
@@ -11,7 +11,7 @@ import (
 
 func tablePrismaTrustedAlertIp(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "prisma_trusted_alert_ip",
+		Name:        "prismacloud_trusted_alert_ip",
 		Description: "List of trusted alert IPs in Prisma Cloud.",
 		Get: &plugin.GetConfig{
 			Hydrate:    getPrismaTrustedAlertIp,
@@ -41,7 +41,7 @@ func tablePrismaTrustedAlertIp(ctx context.Context) *plugin.Table {
 				Name:        "cidrs",
 				Description: "The CIDR blocks of trusted alert IP.",
 				Type:        proto.ColumnType_JSON,
-				Transform: transform.FromField("CIDRS"),
+				Transform:   transform.FromField("CIDRS"),
 			},
 
 			// Steampipe standard column
@@ -60,13 +60,13 @@ func tablePrismaTrustedAlertIp(ctx context.Context) *plugin.Table {
 func listPrismaTrustedAlertIps(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_trusted_alert_ip.listPrismaTrustedAlertIps", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.listPrismaTrustedAlertIps", "connection_error", err)
 		return nil, err
 	}
 
 	alertIps, err := alertIp.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_trusted_alert_ip.listPrismaTrustedAlertIps", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.listPrismaTrustedAlertIps", "api_error", err)
 		return nil, err
 	}
 
@@ -96,13 +96,13 @@ func getPrismaTrustedAlertIp(ctx context.Context, d *plugin.QueryData, h *plugin
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_trusted_alert_ip.getPrismaTrustedAlertIp", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.getPrismaTrustedAlertIp", "connection_error", err)
 		return nil, err
 	}
 
 	alertIp, err := alertIp.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_trusted_alert_ip.getPrismaTrustedAlertIp", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.getPrismaTrustedAlertIp", "api_error", err)
 		return nil, err
 	}
 

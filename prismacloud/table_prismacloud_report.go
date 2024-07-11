@@ -1,4 +1,4 @@
-package prisma
+package prismacloud
 
 import (
 	"context"
@@ -11,10 +11,10 @@ import (
 
 func tablePrismaReport(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "prisma_report",
+		Name:        "prismacloud_report",
 		Description: "List of available alert and compliance reports.",
 		Get: &plugin.GetConfig{
-			Hydrate: getPrismaReport,
+			Hydrate:    getPrismaReport,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
 		List: &plugin.ListConfig{
@@ -113,13 +113,13 @@ func tablePrismaReport(ctx context.Context) *plugin.Table {
 func listPrismaReports(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_report.listPrismaReports", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_report.listPrismaReports", "connection_error", err)
 		return nil, err
 	}
 
 	reports, err := report.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_report.listPrismaReports", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_report.listPrismaReports", "api_error", err)
 		return nil, err
 	}
 
@@ -149,13 +149,13 @@ func getPrismaReport(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_report.getPrismaReport", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_report.getPrismaReport", "connection_error", err)
 		return nil, err
 	}
 
 	report, err := report.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prisma_report.getPrismaReport", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_report.getPrismaReport", "api_error", err)
 		return nil, err
 	}
 
