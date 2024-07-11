@@ -102,4 +102,4 @@ This repository is published under the [Apache 2.0](https://www.apache.org/licen
 Want to help but don't know where to start? Pick up one of the `help wanted` issues:
 
 * [Steampipe](https://github.com/turbot/steampipe/labels/help%20wanted)
-* [Prisma Plugin](https://github.com/turbot/steampipe-plugin-github/labels/help%20wanted)
+* [Prisma Plugin](https://github.com/turbot/steampipe-plugin-prisma/labels/help%20wanted)
