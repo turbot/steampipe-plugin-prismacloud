@@ -24,7 +24,7 @@ func connect(_ context.Context, d *plugin.QueryData) (*prismacloud.Client, error
 
 	// Return error if the minimum credential is not provided
 	if (prismacloudConfig.Username == nil || prismacloudConfig.Password == nil) && (prismacloudConfig.Token == nil) {
-		return nil, fmt.Errorf("'username', 'password' and 'customer_name' or 'token' must be set in the connection configuration. Edit your connection configuration file and then restart Steampipe")
+		return nil, fmt.Errorf("'username' and 'password' or 'token' must be set in the connection configuration. Edit your connection configuration file and then restart Steampipe")
 	}
 
 	// Logging
