@@ -2,21 +2,22 @@ package prismacloud
 
 import (
 	"context"
-	"strings"
 
+	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/api"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaCompliancePosture(ctx context.Context) *plugin.Table {
+func tablePrismaComplianceBreakdownStatistic(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
-		Name:        "prismacloud_compliance_posture",
-		Description: "List all available compliance postures.",
+		Name:        "prismacloud_compliance_breakdown_statistic",
+		Description: "List all available compliance breakdown statistics.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaCompliancePostures,
+			Hydrate:    listPrismaComplianceBreakdownStatistics,
+			KeyColumns: commonComplianceBreakdownKeyQualColumns(),
 		},
-		Columns: []*plugin.Column{
+		Columns: complianceBreakdownCommonFilterColumns([]*plugin.Column{
 			{
 				Name:        "name",
 				Description: "Name of the Compliance Standard/Requirement/Section.",
@@ -42,6 +43,7 @@ func tablePrismaCompliancePosture(ctx context.Context) *plugin.Table {
 				Description: "Description of the Compliance Standard/Requirement/Section.",
 				Type:        proto.ColumnType_STRING,
 			},
+
 			{
 				Name:        "failed_resources",
 				Description: "Number of failing Compliance Standard/Requirement/Section scanned resources.",
@@ -90,26 +92,25 @@ func tablePrismaCompliancePosture(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 
 //// LIST FUNCTION
 
-func listPrismaCompliancePostures(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismaComplianceBreakdownStatistics(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_posture.listPrismaCompliancePostures", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_statistic.listPrismaComplianceBreakdownStatistics", "connection_error", err)
 		return nil, err
 	}
 
-	postures, err := LisCompliancePostures(conn)
-	if err != nil {
-		if strings.Contains(err.Error(), "bad_request") {
-			return nil, nil
-		}
+	query := buildComplianceBreakdownStatisticQueryParameter(ctx, d)
 
-		plugin.Logger(ctx).Error("prismacloud_compliance_posture.listPrismaCompliancePostures", "api_error", err)
+	postures, err := api.LisComplianceBreakdownStatistics(conn, query)
+	if err != nil {
+
+		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_statistic.listPrismaComplianceBreakdownStatistics", "api_error", err)
 		return nil, err
 	}
 

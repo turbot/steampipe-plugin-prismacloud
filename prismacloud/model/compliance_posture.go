@@ -1,4 +1,4 @@
-package prismacloud
+package model
 
 type ComplianceDetails struct {
 	AssignedPolicies                     int32  `json:"assignedPolicies"`
