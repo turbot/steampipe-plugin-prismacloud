@@ -137,3 +137,67 @@ func buildPrioritizedVulnerabilitiesQueryParameter(_ context.Context, d *plugin.
 
 	return queryParameter
 }
+
+// Build input query parameter for the Get Vulnerabilities Burndown API call
+func buildBurndownVulnerabilitiesQueryParameter(_ context.Context, d *plugin.QueryData) url.Values {
+	queryParameter := make(url.Values)
+
+	for columnName, qual := range d.Quals {
+		if qual != nil {
+			operator := ""
+			var val interface{}
+			for _, qu := range qual.Quals {
+				operator = qu.Operator
+				val = qu.Value.GetStringValue()
+			}
+			switch columnName {
+			case "asset_type":
+				if operator == "=" {
+					queryParameter["asset_type"] = []string{fmt.Sprint(val)}
+				}
+			case "life_cycle":
+				if operator == "=" {
+					queryParameter["life_cycle"] = []string{fmt.Sprint(val)}
+				}
+			case "severities":
+				if operator == "=" {
+					queryParameter["severities"] = []string{fmt.Sprint(val)}
+				}
+			}
+		}
+	}
+
+	return queryParameter
+}
+
+// Build input query parameter for the Get Vulnerabilities Asset API call
+func buildVulnerabilityAssetsQueryParameter(_ context.Context, d *plugin.QueryData) url.Values {
+	queryParameter := make(url.Values)
+
+	for columnName, qual := range d.Quals {
+		if qual != nil {
+			operator := ""
+			var val interface{}
+			for _, qu := range qual.Quals {
+				operator = qu.Operator
+				val = qu.Value.GetStringValue()
+			}
+			switch columnName {
+			case "asset_type":
+				if operator == "=" {
+					queryParameter["asset_type"] = []string{fmt.Sprint(val)}
+				}
+			case "life_cycle":
+				if operator == "=" {
+					queryParameter["life_cycle"] = []string{fmt.Sprint(val)}
+				}
+			case "severities":
+				if operator == "=" {
+					queryParameter["severities"] = []string{fmt.Sprint(val)}
+				}
+			}
+		}
+	}
+
+	return queryParameter
+}

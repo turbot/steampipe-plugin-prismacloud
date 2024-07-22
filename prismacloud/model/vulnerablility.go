@@ -60,3 +60,39 @@ type VulnerabilityDetails struct {
 	VulnerabilityCount int `json:"vulnerability_count"`
 	AssetCount         int `json:"asset_count"`
 }
+
+type VulnerabilityBurndownSummary struct {
+	DayNum          int64 `json:"dayNum"`
+	TotalCount      int64 `json:"totalCount"`
+	RemediatedCount int64 `json:"remediatedCount"`
+	EpochTimestamp  int64 `json:"epochTimestamp"`
+}
+
+type VulnerabilityAssetStats struct {
+	Provider        string                  `json:"provider"`
+	Repositories    int64                   `json:"repositories"`
+	Registries      int64                   `json:"registries"`
+	Packages        int64                   `json:"packages"`
+	Assets          int64                   `json:"assets"`
+	Users           int64                   `json:"users"`
+	Vulnerabilities VulnerabilityAssetCount `json:"vulnerabilities"`
+}
+
+type VulnerabilityAssetCount struct {
+	CriticalCount int64 `json:"criticalCount"`
+	HighCount     int64 `json:"highCount"`
+	MediumCount   int64 `json:"mediumCount"`
+	LowCount      int64 `json:"lowCount"`
+}
+
+type VulnerableAsset struct {
+	Stage                string                    `json:"stage"`
+	TotalVulnerabilities int64                     `json:"totalVulnerabilities"`
+	AssetType            string                    `json:"assetType"`
+	TotalAssets          int64                     `json:"totalAssets"`
+	Stats                []VulnerabilityAssetStats `json:"stats"`
+}
+
+type VulnerableAssets struct {
+	Value []VulnerableAsset `json:"value"`
+}

@@ -35,6 +35,8 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"prismacloud_resource":                             tablePrismaResource(ctx),
 			"prismacloud_trusted_alert_ip":                     tablePrismaTrustedAlertIp(ctx),
 			"prismacloud_user":                                 tablePrismaUser(ctx),
+			"prismacloud_vulnerabilitiy_asset":                 tablePrismaVulnerabilitiyAsset(ctx),
+			"prismacloud_vulnerabilitiy_burndown":              tablePrismaVulnerabilitiyBurndown(ctx),
 			"prismacloud_vulnerabilitiy_overview":              tablePrismaVulnerabilitiyOverview(ctx),
 		},
 	}
