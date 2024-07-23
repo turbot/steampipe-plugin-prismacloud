@@ -1,15 +1,15 @@
 ---
-title: "Steampipe Table: prismacloud_user - Query Prisma Cloud users using SQL"
+title: "Steampipe Table: prismacloud_iam_user - Query Prisma Cloud users using SQL"
 description: "Allows users to query Prisma Cloud users. This table provides information about each user, including their username, roles, access keys, and more. It can be used to monitor and manage users within Prisma Cloud."
 ---
 
-# Table: prismacloud_user - Query Prisma Cloud users using SQL
+# Table: prismacloud_iam_user - Query Prisma Cloud users using SQL
 
 The Prisma Cloud user table in Steampipe provides you with information about users within Prisma Cloud. This table allows you, as a security engineer or cloud administrator, to query user-specific details, including username, roles, access keys, and more. You can utilize this table to gather insights on users, such as their access key status, roles, and more. The schema outlines the various attributes of the Prisma Cloud user for you, including the user's ID, name, and email address.
 
 ## Table Usage Guide
 
-The `prismacloud_user` table in Steampipe provides information about users within Prisma Cloud. This table allows you to query details such as the user's username, roles, access keys, and more, enabling you to manage and monitor your users effectively.
+The `prismacloud_iam_user` table in Steampipe provides information about users within Prisma Cloud. This table allows you to query details such as the user's username, roles, access keys, and more, enabling you to manage and monitor your users effectively.
 
 ## Examples
 
@@ -23,7 +23,7 @@ select
   email,
   roles
 from
-  prismacloud_user;
+  prismacloud_iam_user;
 ```
 
 ```sql+sqlite
@@ -32,7 +32,7 @@ select
   email,
   roles
 from
-  prismacloud_user;
+  prismacloud_iam_user;
 ```
 
 ### List of enabled users
@@ -45,7 +45,7 @@ select
   email,
   enabled
 from
-  prismacloud_user
+  prismacloud_iam_user
 where
   enabled = true;
 ```
@@ -56,7 +56,7 @@ select
   email,
   enabled
 from
-  prismacloud_user
+  prismacloud_iam_user
 where
   enabled = 1;
 ```
@@ -71,7 +71,7 @@ select
   email,
   access_keys_allowed
 from
-  prismacloud_user
+  prismacloud_iam_user
 where
   access_keys_allowed = true;
 ```
@@ -82,7 +82,7 @@ select
   email,
   access_keys_allowed
 from
-  prismacloud_user
+  prismacloud_iam_user
 where
   access_keys_allowed = 1;
 ```
@@ -98,7 +98,7 @@ select
   access_key_name,
   access_key_expiration
 from
-  prismacloud_user
+  prismacloud_iam_user
 where
   access_key_expiration < extract(epoch from now()) + 2592000;
 ```
@@ -110,7 +110,7 @@ select
   access_key_name,
   access_key_expiration
 from
-  prismacloud_user
+  prismacloud_iam_user
 where
   access_key_expiration < strftime('%s','now') + 2592000;
 ```
@@ -125,7 +125,7 @@ select
   email,
   role_ids
 from
-  prismacloud_user;
+  prismacloud_iam_user;
 ```
 
 ```sql+sqlite
@@ -134,5 +134,5 @@ select
   email,
   role_ids
 from
-  prismacloud_user;
+  prismacloud_iam_user;
 ```
