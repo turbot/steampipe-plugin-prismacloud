@@ -197,7 +197,7 @@ func listPrismaAlerts(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 		req.Offset = req.Offset + alerts.Total
 		req.PageToken = alerts.PageToken
 
-		alerts, err := alert.List(conn, req)
+		alerts, err = alert.List(conn, req)
 		if err != nil {
 			plugin.Logger(ctx).Error("prismacloud_alert.listPrismaAlerts", "api_paging_error", err)
 			return nil, err
