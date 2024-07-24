@@ -8,6 +8,7 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
 // Common filter columns for the Compliance Breakdown
@@ -17,13 +18,16 @@ func complianceBreakdownCommonFilterColumns(columns []*plugin.Column) []*plugin.
 			Name:        "account_id",
 			Description: "The unique identifier for the account.",
 			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromQual("account_id"),
+		},
+		{
+			Name:        "account_name",
+			Description: "The unique identifier for the account.",
+			Type:        proto.ColumnType_STRING,
 		},
 		{
 			Name:        "cloud_type",
 			Description: "The type of cloud (e.g., AWS, Azure, GCP).",
 			Type:        proto.ColumnType_STRING,
-			Transform:   transform.FromQual("cloud_type"),
 		},
 		{
 			Name:        "cloud_region",
@@ -54,21 +58,20 @@ func complianceBreakdownCommonFilterColumns(columns []*plugin.Column) []*plugin.
 
 // Common key columns for the the Compliance Breakdown
 func commonComplianceBreakdownKeyQualColumns() plugin.KeyColumnSlice {
-	commonKeyQualsCol := plugin.AnyColumn([]string{
-		"account_id",
-		"cloud_type",
-		"cloud_region",
-		"policy_compliance_standard_name",
-		"policy_compliance_requirement_name",
-		"policy_compliance_section_id",
-	})
+	commonKeyQualsCol := plugin.KeyColumnSlice{
+		{Name: "account_name", Require: plugin.Optional},
+		{Name: "cloud_type", Require: plugin.Optional},
+		{Name: "cloud_region", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+		{Name: "policy_compliance_standard_name", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+		{Name: "policy_compliance_requirement_name", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+		{Name: "policy_compliance_section_id", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+	}
 
 	return commonKeyQualsCol
 }
 
 // Build input query parameter for the Get Compliance Statistics Breakdown API call
-func buildComplianceBreakdownStatisticQueryParameter(_ context.Context, d *plugin.QueryData) url.Values {
-	queryParameter := make(url.Values)
+func buildComplianceBreakdownStatisticQueryParameter(_ context.Context, d *plugin.QueryData, queryParameter url.Values) url.Values {
 
 	for columnName, qual := range d.Quals {
 		if qual != nil {
@@ -79,10 +82,6 @@ func buildComplianceBreakdownStatisticQueryParameter(_ context.Context, d *plugi
 				val = qu.Value.GetStringValue()
 			}
 			switch columnName {
-			case "account_id":
-				if operator == "=" {
-					queryParameter["cloud.account"] = []string{fmt.Sprint(val)}
-				}
 			case "cloud_type":
 				if operator == "=" {
 					queryParameter["cloud.type"] = []string{fmt.Sprint(val)}

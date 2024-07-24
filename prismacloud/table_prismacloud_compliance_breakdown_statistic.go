@@ -2,8 +2,11 @@ package prismacloud
 
 import (
 	"context"
+	"net/url"
 
+	"github.com/paloaltonetworks/prisma-cloud-go/cloud/account"
 	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/api"
+	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/model"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -14,8 +17,9 @@ func tablePrismaComplianceBreakdownStatistic(ctx context.Context) *plugin.Table 
 		Name:        "prismacloud_compliance_breakdown_statistic",
 		Description: "List all available compliance breakdown statistics.",
 		List: &plugin.ListConfig{
-			Hydrate:    listPrismaComplianceBreakdownStatistics,
-			KeyColumns: commonComplianceBreakdownKeyQualColumns(),
+			ParentHydrate: listPrismaAccounts,
+			Hydrate:       listPrismaComplianceBreakdownStatistics,
+			KeyColumns:    commonComplianceBreakdownKeyQualColumns(),
 		},
 		Columns: complianceBreakdownCommonFilterColumns([]*plugin.Column{
 			{
@@ -96,16 +100,38 @@ func tablePrismaComplianceBreakdownStatistic(ctx context.Context) *plugin.Table 
 	}
 }
 
+type complianceBreakdownStatistic struct {
+	AccountName string
+	AccountId   string
+	CloudType   string
+	model.ComplianceDetails
+}
+
 //// LIST FUNCTION
 
-func listPrismaComplianceBreakdownStatistics(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismaComplianceBreakdownStatistics(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+
+	account := h.Item.(account.Account)
+
+	if d.EqualsQualString("account_name") != "" && d.EqualsQualString("account_name") != account.Name {
+		return nil, nil
+	}
+
+	if d.EqualsQualString("cloud_type") != "" && d.EqualsQualString("cloud_type") != account.CloudType {
+		return nil, nil
+	}
 	conn, err := connect(ctx, d)
 	if err != nil {
 		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_statistic.listPrismaComplianceBreakdownStatistics", "connection_error", err)
 		return nil, err
 	}
 
-	query := buildComplianceBreakdownStatisticQueryParameter(ctx, d)
+	// For any of the query parameter it the returning the same row. However, the query param is required to make the the API call do hardcoded the value.
+	query := url.Values{
+		"cloud.account": []string{account.Name},
+	}
+
+	query = buildComplianceBreakdownStatisticQueryParameter(ctx, d, query)
 
 	postures, err := api.LisComplianceBreakdownStatistics(conn, query)
 	if err != nil {
@@ -116,7 +142,7 @@ func listPrismaComplianceBreakdownStatistics(ctx context.Context, d *plugin.Quer
 
 	for _, posture := range postures.ComplianceDetails {
 
-		d.StreamListItem(ctx, posture)
+		d.StreamListItem(ctx, complianceBreakdownStatistic{account.Name, account.AccountId, account.CloudType, posture})
 
 		// Context can be cancelled due to manual cancellation or the limit has been hit
 		if d.RowsRemaining(ctx) == 0 {
