@@ -3,8 +3,11 @@ package prismacloud
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/paloaltonetworks/prisma-cloud-go/policy"
+	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/api"
+	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/model"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
@@ -27,6 +30,7 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 				{Name: "enabled", Require: plugin.Optional},
 				{Name: "policy_mode", Require: plugin.Optional},
 				{Name: "remediable", Require: plugin.Optional},
+				{Name: "name", Require: plugin.Optional},
 			},
 		},
 		Columns: []*plugin.Column{
@@ -123,7 +127,9 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 			{
 				Name:        "open_alerts_count",
 				Description: "The number of open alerts for the policy.",
+				Hydrate:     getPrismaOpenAlertCountForPolicy,
 				Type:        proto.ColumnType_INT,
+				Transform:   transform.FromValue(),
 			},
 			{
 				Name:        "owner",
@@ -241,6 +247,65 @@ func getPrismaPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	return policy, nil
 }
 
+func getPrismaOpenAlertCountForPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+	policy := h.Item.(policy.Policy)
+
+	type filterMap map[string]string
+
+	filters := []filterMap{
+		{"name": "alert.status", "operator": "=", "value": "open"},
+		{"name": "policy.severity", "operator": "=", "value": policy.Severity},
+		{"name": "policy.name", "operator": "=", "value": policy.Name},
+		{"name": "timeRange.type", "operator": "=", "value": "ALERT_UPDATED"},
+	}
+	sortBy := []string{"alertCount:asc", "severity:desc"}
+	timeRange := map[string]string{
+		"type":  "to_now",
+		"value": "epoch",
+	}
+	conn, err := connect(ctx, d)
+	if err != nil {
+		plugin.Logger(ctx).Error("prismacloud_policy.getPrismaOpenAlertCountForPolicy", "connection_error", err)
+		return nil, err
+	}
+
+	req := map[string]interface{}{
+		"filters":       filters,
+		"sortBy":        sortBy,
+		"timeRange":     timeRange,
+		"nextPageToken": "",
+	}
+	var policies []model.Policy
+	results, err := api.GetAlertCountOfPolicies(conn, req)
+	if err != nil {
+		if strings.Contains(err.Error(), "404") {
+			return 0, nil
+		}
+		plugin.Logger(ctx).Error("prismacloud_policy.getPrismaOpenAlertCountForPolicy", "api_error", err)
+		return nil, err
+	}
+
+	policies = append(policies, results.Policies...)
+
+	for results.NextPageToken != "" {
+		req["nextPageToken"] = results.NextPageToken
+		results, err = api.GetAlertCountOfPolicies(conn, req)
+		if err != nil {
+			plugin.Logger(ctx).Error("prismacloud_policy.getPrismaOpenAlertCountForPolicy", "paging_error", err)
+			return nil, err
+		}
+		policies = append(policies, results.Policies...)
+	}
+
+	for _, p := range policies {
+		if p.PolicyId == policy.PolicyId {
+			return p.AlertCount, nil
+		}
+	}
+
+	return 0, nil
+}
+
 //// UTILITY FUNCTION
 
 // Build the list policy input param
@@ -254,6 +319,7 @@ func buildPrismacloudListPolicyInputQuery(d *plugin.QueryData) map[string]string
 		"enabled":     "policy.enabled",
 		"policy_mode": "policy.mode",
 		"remediable":  "policy.remediable",
+		"name":        "policy.name",
 	}
 
 	for columnName, qp := range filterQuals {
