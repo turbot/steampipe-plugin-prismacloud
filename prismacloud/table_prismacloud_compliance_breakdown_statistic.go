@@ -28,6 +28,11 @@ func tablePrismaComplianceBreakdownStatistic(ctx context.Context) *plugin.Table 
 				Type:        proto.ColumnType_STRING,
 			},
 			{
+				Name:        "id",
+				Description: "ID of the Compliance Standard/Requirement/Section.",
+				Type:        proto.ColumnType_STRING,
+			},
+			{
 				Name:        "assigned_policies",
 				Description: "Number of policies assigned to the Compliance Standard/Requirement/Section.",
 				Type:        proto.ColumnType_INT,
@@ -57,11 +62,6 @@ func tablePrismaComplianceBreakdownStatistic(ctx context.Context) *plugin.Table 
 				Name:        "high_severity_failed_resources",
 				Description: "Number of Compliance Standard/Requirement/Section scanned resources failing high severity policies.",
 				Type:        proto.ColumnType_INT,
-			},
-			{
-				Name:        "id",
-				Description: "ID of the Compliance Standard/Requirement/Section.",
-				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "informational_severity_failed_resources",
