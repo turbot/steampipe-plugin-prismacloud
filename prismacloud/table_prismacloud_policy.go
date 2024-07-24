@@ -2,6 +2,7 @@ package prismacloud
 
 import (
 	"context"
+	"fmt"
 
 	"github.com/paloaltonetworks/prisma-cloud-go/policy"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
@@ -19,6 +20,14 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 		},
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaPolicies,
+			KeyColumns: plugin.KeyColumnSlice{
+				{Name: "cloud_type", Require: plugin.Optional},
+				{Name: "severity", Require: plugin.Optional},
+				{Name: "policy_type", Require: plugin.Optional},
+				{Name: "enabled", Require: plugin.Optional},
+				{Name: "policy_mode", Require: plugin.Optional},
+				{Name: "remediable", Require: plugin.Optional},
+			},
 		},
 		Columns: []*plugin.Column{
 			{
@@ -187,7 +196,9 @@ func listPrismaPolicies(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 		return nil, err
 	}
 
-	policies, err := policy.List(conn, nil)
+	query := buildPrismacloudListPolicyInputQuery(d)
+
+	policies, err := policy.List(conn, query)
 	if err != nil {
 		plugin.Logger(ctx).Error("prismacloud_policy.listPrismaPolicies", "api_error", err)
 		return nil, err
@@ -228,4 +239,33 @@ func getPrismaPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 	}
 
 	return policy, nil
+}
+
+//// UTILITY FUNCTION
+
+// Build the list policy input param
+func buildPrismacloudListPolicyInputQuery(d *plugin.QueryData) map[string]string {
+
+	query := make(map[string]string)
+	filterQuals := map[string]string{
+		"cloud_type":  "cloud.type",
+		"severity":    "policy.severity",
+		"policy_type": "policy.type",
+		"enabled":     "policy.enabled",
+		"policy_mode": "policy.mode",
+		"remediable":  "policy.remediable",
+	}
+
+	for columnName, qp := range filterQuals {
+		if (columnName == "enabled" || columnName == "remediable") && d.EqualsQuals[columnName] != nil { // Boolean quals
+			query[qp] = fmt.Sprint(d.EqualsQuals[columnName].GetBoolValue())
+			continue
+		}
+		if d.EqualsQuals[columnName] != nil {
+			query[qp] = d.EqualsQuals[columnName].GetStringValue()
+		}
+	}
+
+	return query
+
 }
