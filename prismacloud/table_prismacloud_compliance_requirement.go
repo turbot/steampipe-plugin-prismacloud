@@ -79,6 +79,7 @@ func tablePrismaComplianceRequirement(ctx context.Context) *plugin.Table {
 				Name:        "requirement_id",
 				Description: "The unique identifier for the requirement within the compliance standard.",
 				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("RequirementID"),
 			},
 			{
 				Name:        "standard_name",
