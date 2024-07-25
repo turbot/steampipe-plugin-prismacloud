@@ -31,6 +31,7 @@ func tablePrismaComplianceBreakdownStatistic(ctx context.Context) *plugin.Table 
 				Name:        "id",
 				Description: "ID of the Compliance Standard/Requirement/Section.",
 				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromField("ID"),
 			},
 			{
 				Name:        "assigned_policies",
