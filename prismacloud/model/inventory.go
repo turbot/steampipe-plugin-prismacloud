@@ -35,3 +35,58 @@ type InventoryDiscoveredAPIResponse struct {
 	Total         int                            `json:"_total"`
 	Count         int                            `json:"_count"`
 }
+
+//// WORKLOAD
+type InventoryWorkload struct {
+	ContainerImages ContainerImages `json:"containerImages"`
+	Hosts           Hosts           `json:"hosts"`
+}
+
+type ContainerImages struct {
+	Stages struct {
+		Build  int `json:"build"`
+		Deploy int `json:"deploy"`
+		Run    int `json:"run"`
+	} `json:"stages"`
+	Vulnerable     int         `json:"vulnerable"`
+	CloudProviders interface{} `json:"cloudProviders"`
+}
+
+type Hosts struct {
+	Total          int      `json:"total"`
+	Vulnerable     int      `json:"vulnerable"`
+	CloudProviders []string `json:"cloudProviders"`
+}
+
+//// WOrkload Container Images
+
+type Stage struct {
+	Build  int `json:"build"`
+	Deploy int `json:"deploy"`
+	Run    int `json:"run"`
+}
+type VulnFunnel struct {
+	Total         int `json:"total"`
+	Urgent        int `json:"urgent"`
+	Exploitable   int `json:"exploitable"`
+	Patchable     int `json:"patchable"`
+	PackageInUse  int `json:"packageInUse"`
+}
+
+type WorkloadContainerImage struct {
+	Name              string    `json:"name"`
+	UaiID             string    `json:"uaiID"`
+	Stages            Stage     `json:"stages"`
+	RunningContainers int       `json:"runningContainers"`
+	VulnFunnel        VulnFunnel `json:"vulnFunnel"`
+	ScanPassed        bool      `json:"scanPassed"`
+	Base              bool      `json:"base"`
+	RelatedImages     int       `json:"relatedImages"`
+}
+
+type WorkloadContainerImagesResponse struct {
+	Value         []WorkloadContainerImage `json:"value"`
+	Total         int                      `json:"total"`
+	NextPageToken string                   `json:"nextPageToken"`
+}
+
