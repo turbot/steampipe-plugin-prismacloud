@@ -127,3 +127,56 @@ func GetInventoryWorkloadContainerImages(authToken string, nextPageToken string)
 
 	return &cImages, nil
 }
+
+func GetInventoryWorkloadHosts(authToken string, nextPageToken string) (*model.WorkloadContainerHostResponse, error) {
+	// Define the URL and headers
+	url := "https://asia-northeast1.cloud.twistlock.com/anz-3001938/api/v1/bff/hosts"
+	contentType := "application/json"
+	accept := "application/json"
+
+	// Create the payload
+	payload := map[string]interface{}{
+		"sort":          "vulnerabilities",
+		"limit":         30,
+		"nextPageToken": nextPageToken,
+	}
+
+	payloadBytes, err := json.Marshal(payload)
+	if err != nil {
+		return nil, fmt.Errorf("failed to marshal payload: %w", err)
+	}
+
+	// Create a new request with the payload
+	req, err := http.NewRequest("POST", url, bytes.NewBuffer(payloadBytes))
+	if err != nil {
+		return nil, fmt.Errorf("failed to create request: %w", err)
+	}
+
+	// Set headers
+	req.Header.Set("Content-Type", contentType)
+	req.Header.Set("Accept", accept)
+	req.Header.Set("x-redlock-auth", authToken)
+
+	// Make the request
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("failed to make request: %w", err)
+	}
+	defer resp.Body.Close()
+
+	// Read the response body
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read response body: %w", err)
+	}
+
+	// Unmarshal the response body into the ContainerImages struct
+	var hosts model.WorkloadContainerHostResponse
+	err = json.Unmarshal(body, &hosts)
+	if err != nil {
+		return nil, fmt.Errorf("failed to unmarshal response body: %w", err)
+	}
+
+	return &hosts, nil
+}

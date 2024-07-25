@@ -36,7 +36,7 @@ type InventoryDiscoveredAPIResponse struct {
 	Count         int                            `json:"_count"`
 }
 
-//// WORKLOAD
+// // WORKLOAD
 type InventoryWorkload struct {
 	ContainerImages ContainerImages `json:"containerImages"`
 	Hosts           Hosts           `json:"hosts"`
@@ -66,22 +66,22 @@ type Stage struct {
 	Run    int `json:"run"`
 }
 type VulnFunnel struct {
-	Total         int `json:"total"`
-	Urgent        int `json:"urgent"`
-	Exploitable   int `json:"exploitable"`
-	Patchable     int `json:"patchable"`
-	PackageInUse  int `json:"packageInUse"`
+	Total        int `json:"total"`
+	Urgent       int `json:"urgent"`
+	Exploitable  int `json:"exploitable"`
+	Patchable    int `json:"patchable"`
+	PackageInUse int `json:"packageInUse"`
 }
 
 type WorkloadContainerImage struct {
-	Name              string    `json:"name"`
-	UaiID             string    `json:"uaiID"`
-	Stages            Stage     `json:"stages"`
-	RunningContainers int       `json:"runningContainers"`
+	Name              string     `json:"name"`
+	UaiID             string     `json:"uaiID"`
+	Stages            Stage      `json:"stages"`
+	RunningContainers int        `json:"runningContainers"`
 	VulnFunnel        VulnFunnel `json:"vulnFunnel"`
-	ScanPassed        bool      `json:"scanPassed"`
-	Base              bool      `json:"base"`
-	RelatedImages     int       `json:"relatedImages"`
+	ScanPassed        bool       `json:"scanPassed"`
+	Base              bool       `json:"base"`
+	RelatedImages     int        `json:"relatedImages"`
 }
 
 type WorkloadContainerImagesResponse struct {
@@ -90,3 +90,17 @@ type WorkloadContainerImagesResponse struct {
 	NextPageToken string                   `json:"nextPageToken"`
 }
 
+//// WORKLOAD HOST
+
+type WorkloadContainerHostResponse struct {
+	Value         []WorkLoadInventoryHost `json:"value"`
+	Total         int                     `json:"total"`
+	NextPageToken string                  `json:"nextPageToken"`
+}
+
+type WorkLoadInventoryHost struct {
+	Name       string     `json:"name"`
+	ID         string     `json:"id"`
+	UaiID      string     `json:"uaiID"`
+	VulnFunnel VulnFunnel `json:"vulnFunnel"`
+}

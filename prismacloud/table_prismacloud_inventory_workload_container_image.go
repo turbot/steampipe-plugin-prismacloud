@@ -23,7 +23,7 @@ func tablePrismaInventoryWorkloadContainerImage(ctx context.Context) *plugin.Tab
 				Type:        proto.ColumnType_STRING,
 			},
 			{
-				Name:        "uaiID",
+				Name:        "uai_id",
 				Description: "The unique identifier of the UAI.",
 				Type:        proto.ColumnType_STRING,
 				Transform: transform.FromField("UaiID"),
