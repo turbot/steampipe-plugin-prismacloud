@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"net/url"
 
 	prismacloud "github.com/paloaltonetworks/prisma-cloud-go"
 	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/model"
@@ -22,16 +23,18 @@ func ListInventoryDiscoveredAPI(c *prismacloud.Client, req map[string]interface{
 	return &apis, nil
 }
 
-// func GetInventoryWorkloads(c *prismacloud.Client) (*model.InventoryWorkload, error) {
-// 	c.Log(prismacloud.LogAction, "get of %s", "inventory workload")
-// 	// https://asia-northeast1.cloud.twistlock.com/anz-3001938/api/v1/bff/assets/summary
-// 	var workloads model.InventoryWorkload
-// 	if _, err := c.Communicate("GET", []string{"anz-3001938", "api", "v1", "bff", "assets", "summary"}, nil, nil, &workloads); err != nil {
-// 		return nil, err
-// 	}
+// Asset Inventory View V3 - GET
+// https://pan.dev/prisma-cloud/api/cspm/asset-inventory-v-3/
+func ListInventoryAsset(c *prismacloud.Client, query url.Values) (*model.GroupedAggregateAssetResponse, error) {
+	c.Log(prismacloud.LogAction, "list of %s", "inventory api endpoints")
 
-// 	return &workloads, nil
-// }
+	var assets model.GroupedAggregateAssetResponse
+	if _, err := c.Communicate("GET", []string{"v3", "inventory"}, query, nil, &assets); err != nil {
+		return nil, err
+	}
+
+	return &assets, nil
+}
 
 func GetInventoryWorkloads(authToken string) (*model.InventoryWorkload, error) {
 	// Define the URL and headers

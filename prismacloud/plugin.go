@@ -33,6 +33,7 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			"prismacloud_iam_user":                                 tablePrismaIAMUser(ctx),
 			"prismacloud_inventory_api_endpoint":                   tablePrismaInventoryAPIEndpoint(ctx),
 			"prismacloud_inventory_asset_explorer":                 tablePrismaInventoryAssetExplorer(ctx),
+			"prismacloud_inventory_asset_view":                     tablePrismaInventoryAssetView(ctx),
 			"prismacloud_inventory_workload":                       tablePrismaInventoryWorkload(ctx),
 			"prismacloud_inventory_workload_container_image":       tablePrismaInventoryWorkloadContainerImage(ctx),
 			"prismacloud_inventory_workload_host":                  tablePrismaInventoryWorkloadHost(ctx),

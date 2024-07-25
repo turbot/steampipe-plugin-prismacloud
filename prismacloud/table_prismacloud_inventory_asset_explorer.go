@@ -219,6 +219,9 @@ func listPrismaInventoryAssetExplorer(ctx context.Context, d *plugin.QueryData, 
 	if d.EqualsQualString("region_name") != "" {
 		query.Set("cloud.region", d.EqualsQualString("region_name"))
 	}
+	if d.EqualsQualString("compliance_standard_name") != "" {
+		query.Set("policy.complianceStandard", d.EqualsQualString("compliance_standard_name"))
+	}
 	if d.EqualsQualString("compliance_requirement_name") != "" {
 		query.Set("policy.complianceRequirement", d.EqualsQualString("compliance_requirement_name"))
 	}

@@ -104,3 +104,33 @@ type WorkLoadInventoryHost struct {
 	UaiID      string     `json:"uaiID"`
 	VulnFunnel VulnFunnel `json:"vulnFunnel"`
 }
+
+//// GROUPED AGGREGATED ASSET
+
+type GroupedAggregateAssetResponse struct {
+	GroupedAggregate []GroupedAggregateAsset `json:"groupedAggregates"`
+}
+
+type GroupedAggregateAsset struct {
+	AccountId                         string `json:"accountId"`
+	AccountName                       string `json:"accountName"`
+	AllowDrillDown                    bool   `json:"allowDrillDown"`
+	CloudTypeName                     string `json:"cloudTypeName"`
+	CriticalSeverityFailedResources   int64  `json:"criticalSeverityFailedResources"`
+	CriticalVulnerabilityFailedResources int64 `json:"criticalVulnerabilityFailedResources"`
+	FailedResources                   int64  `json:"failedResources"`
+	HighSeverityFailedResources       int64  `json:"highSeverityFailedResources"`
+	HighVulnerabilityFailedResources  int64  `json:"highVulnerabilityFailedResources"`
+	InformationalSeverityFailedResources int64 `json:"informationalSeverityFailedResources"`
+	LowSeverityFailedResources        int64  `json:"lowSeverityFailedResources"`
+	LowVulnerabilityFailedResources   int64  `json:"lowVulnerabilityFailedResources"`
+	MediumSeverityFailedResources     int64  `json:"mediumSeverityFailedResources"`
+	MediumVulnerabilityFailedResources int64  `json:"mediumVulnerabilityFailedResources"`
+	PassedResources                   int64  `json:"passedResources"`
+	RegionName                        string `json:"regionName"`
+	ResourceTypeName                  string `json:"resourceTypeName"`
+	ServiceName                       string `json:"serviceName"`
+	TotalResources                    int64  `json:"totalResources"`
+	TotalVulnerabilityFailedResources int64  `json:"totalVulnerabilityFailedResources"`
+	UnscannedResources                int64  `json:"unscannedResources"`
+}
