@@ -9,6 +9,7 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
 func tablePrismaInventoryAssetExplorer(ctx context.Context) *plugin.Table {
@@ -21,6 +22,9 @@ func tablePrismaInventoryAssetExplorer(ctx context.Context) *plugin.Table {
 				{Name: "account_name", Require: plugin.Optional},
 				{Name: "cloud_type", Require: plugin.Optional},
 				{Name: "region_name", Require: plugin.Optional},
+				{Name: "compliance_requirement_name", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+				{Name: "compliance_standard_name", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+				{Name: "scan_status", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
 		Columns: []*plugin.Column{
@@ -43,6 +47,24 @@ func tablePrismaInventoryAssetExplorer(ctx context.Context) *plugin.Table {
 				Name:        "account_name",
 				Description: "The name of the account.",
 				Type:        proto.ColumnType_STRING,
+			},
+			{
+				Name:        "compliance_requirement_name",
+				Description: "The name of the compliance requirement.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("compliance_requirement_name"),
+			},
+			{
+				Name:        "compliance_standard_name",
+				Description: "The name of the compliance standard.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("compliance_standard_name"),
+			},
+			{
+				Name:        "scan_status",
+				Description: "The scan status. Possible values are: 'passed' or 'failed'",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("scan_status"),
 			},
 			{
 				Name:        "alert_status_critical",
@@ -196,6 +218,12 @@ func listPrismaInventoryAssetExplorer(ctx context.Context, d *plugin.QueryData, 
 	}
 	if d.EqualsQualString("region_name") != "" {
 		query.Set("cloud.region", d.EqualsQualString("region_name"))
+	}
+	if d.EqualsQualString("compliance_requirement_name") != "" {
+		query.Set("policy.complianceRequirement", d.EqualsQualString("compliance_requirement_name"))
+	}
+	if d.EqualsQualString("scan_status") != "" {
+		query.Set("scan.status", d.EqualsQualString("scan_status"))
 	}
 
 	resp, err := api.ListInventoryAssetExplorer(conn, query)
