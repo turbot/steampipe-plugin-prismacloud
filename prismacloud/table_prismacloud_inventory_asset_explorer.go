@@ -27,7 +27,7 @@ func tablePrismaInventoryAssetExplorer(ctx context.Context) *plugin.Table {
 				{Name: "scan_status", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "The unique identifier for the resource.",
@@ -188,7 +188,7 @@ func tablePrismaInventoryAssetExplorer(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

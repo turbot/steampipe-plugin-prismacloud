@@ -33,7 +33,7 @@ func tablePrismaInventoryAssetView(ctx context.Context) *plugin.Table {
 				{Name: "scan_status", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "group_by",
 				Description: "The table content depends on the groupBy query parameter. Default value is 'cloud.service'. Possible values are: 'cloudType', 'cloud.account', 'cloud.region', 'cloud.service', and 'resource.type'.",
@@ -174,7 +174,7 @@ func tablePrismaInventoryAssetView(ctx context.Context) *plugin.Table {
 				Description: "The total number of unscanned resources.",
 				Type:        proto.ColumnType_INT,
 			},
-		},
+		}),
 	}
 }
 

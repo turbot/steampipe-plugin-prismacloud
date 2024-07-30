@@ -25,7 +25,7 @@ func tablePrismaComplianceRequirement(ctx context.Context) *plugin.Table {
 				{Name: "compliance_id", Require: plugin.Optional},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "name",
 				Description: "The name of the requirement.",
@@ -111,7 +111,7 @@ func tablePrismaComplianceRequirement(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

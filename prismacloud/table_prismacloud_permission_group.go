@@ -20,7 +20,7 @@ func tablePrismaPermissionGroup(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaPermissionGroups,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "The unique identifier for the permission group.",
@@ -96,7 +96,7 @@ func tablePrismaPermissionGroup(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

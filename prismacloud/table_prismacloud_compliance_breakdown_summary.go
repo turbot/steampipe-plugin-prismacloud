@@ -29,7 +29,7 @@ func tablePrismaComplianceBreakdownSummary(ctx context.Context) *plugin.Table {
 				{Name: "policy_compliance_section_id", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
-		Columns: complianceBreakdownCommonFilterColumns([]*plugin.Column{
+		Columns: commonColumns(complianceBreakdownCommonFilterColumns([]*plugin.Column{
 			{
 				Name:        "critical_severity_failed_resources",
 				Description: "Number of scanned compliance resources whose highest policy failure is critical.",
@@ -76,7 +76,7 @@ func tablePrismaComplianceBreakdownSummary(ctx context.Context) *plugin.Table {
 				Description: "Total number of scanned compliance resources.",
 				Type:        proto.ColumnType_INT,
 			},
-		}),
+		})),
 	}
 }
 
@@ -106,7 +106,8 @@ func listPrismaComplianceBreakdownSummary(ctx context.Context, d *plugin.QueryDa
 		return nil, nil
 	}
 
-	// For any of the query parameter it the returning the same row. However, the query param is required to make the the API call do hardcoded the value.
+	// For any of the query parameter it the returning the same row. However, the query param is required to make the the API call do hardcoded the value, and added it as a optional qual.
+	// If we are not specifying any of the parameter the API doesn't return any result.
 	query := url.Values{
 		"cloud.account": []string{account.Name},
 	}

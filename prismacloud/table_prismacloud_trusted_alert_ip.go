@@ -20,7 +20,7 @@ func tablePrismaTrustedAlertIp(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaTrustedAlertIps,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "name",
 				Description: "The name of the trusted alert IP.",
@@ -51,7 +51,7 @@ func tablePrismaTrustedAlertIp(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

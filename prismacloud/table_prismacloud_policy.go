@@ -11,6 +11,7 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
 func tablePrismaPolicy(ctx context.Context) *plugin.Table {
@@ -31,9 +32,12 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 				{Name: "policy_mode", Require: plugin.Optional},
 				{Name: "remediable", Require: plugin.Optional},
 				{Name: "name", Require: plugin.Optional},
+				{Name: "compliance_requirement_name", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+				{Name: "compliance_standard_name", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+				{Name: "compliance_section_id", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "policy_id",
 				Description: "The unique identifier for the policy.",
@@ -58,6 +62,24 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 				Name:        "policy_upi",
 				Description: "The unique policy identifier.",
 				Type:        proto.ColumnType_STRING,
+			},
+			{
+				Name:        "compliance_standard_name",
+				Description: "The name of the compliance standard.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("compliance_standard_name"),
+			},
+			{
+				Name:        "compliance_requirement_name",
+				Description: "The name of the compliance requirement.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("compliance_requirement_name"),
+			},
+			{
+				Name:        "compliance_section_id",
+				Description: "The name of the compliance standard.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("compliance_section_id"),
 			},
 			{
 				Name:        "description",
@@ -189,7 +211,7 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 
@@ -313,13 +335,16 @@ func buildPrismacloudListPolicyInputQuery(d *plugin.QueryData) map[string]string
 
 	query := make(map[string]string)
 	filterQuals := map[string]string{
-		"cloud_type":  "cloud.type",
-		"severity":    "policy.severity",
-		"policy_type": "policy.type",
-		"enabled":     "policy.enabled",
-		"policy_mode": "policy.mode",
-		"remediable":  "policy.remediable",
-		"name":        "policy.name",
+		"compliance_standard_name":    "policy.complianceStandard",
+		"compliance_requirement_name": "policy.complianceRequirement",
+		"compliance_section_id":       "policy.complianceSection",
+		"cloud_type":                  "cloud.type",
+		"severity":                    "policy.severity",
+		"policy_type":                 "policy.type",
+		"enabled":                     "policy.enabled",
+		"policy_mode":                 "policy.mode",
+		"remediable":                  "policy.remediable",
+		"name":                        "policy.name",
 	}
 
 	for columnName, qp := range filterQuals {

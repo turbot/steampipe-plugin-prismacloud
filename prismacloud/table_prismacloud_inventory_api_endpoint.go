@@ -17,7 +17,7 @@ func tablePrismaInventoryAPIEndpoint(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaInventoryAPIEndpoints,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "asset_id",
 				Description: "The unique identifier for the asset.",
@@ -46,13 +46,11 @@ func tablePrismaInventoryAPIEndpoint(ctx context.Context) *plugin.Table {
 				Name:        "hits",
 				Description: "The number of hits.",
 				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("Hits"),
 			},
 			{
 				Name:        "workloads",
 				Description: "The workloads associated with the asset.",
 				Type:        proto.ColumnType_JSON,
-				Transform:   transform.FromField("Workloads"),
 			},
 			{
 				Name:        "service_name",
@@ -129,7 +127,7 @@ func tablePrismaInventoryAPIEndpoint(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

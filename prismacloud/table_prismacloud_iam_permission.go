@@ -22,7 +22,7 @@ func tablePrismaIAMPermission(ctx context.Context) *plugin.Table {
 				{Name: "permission_query", Require: plugin.Optional},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "The unique identifier for the permission.",
@@ -304,7 +304,7 @@ func tablePrismaIAMPermission(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

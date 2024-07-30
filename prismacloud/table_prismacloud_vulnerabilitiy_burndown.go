@@ -22,7 +22,7 @@ func tablePrismaVulnerabilitiyBurndown(ctx context.Context) *plugin.Table {
 				{Name: "severities", Require: plugin.Required, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "asset_type",
 				Description: "The type of asset. Possible values are: iac, package, deployedImage, serverlessFunction, host, registryImage, vmImage.",
@@ -62,7 +62,7 @@ func tablePrismaVulnerabilitiyBurndown(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_TIMESTAMP,
 				Transform:   transform.FromField("EpochTimestamp").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
-		},
+		}),
 	}
 }
 

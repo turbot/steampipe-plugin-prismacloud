@@ -16,7 +16,7 @@ func tablePrismaInventoryWorkloadHost(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaInventoryWorkloadHosts,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "name",
 				Description: "The name of the container image.",
@@ -47,7 +47,7 @@ func tablePrismaInventoryWorkloadHost(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

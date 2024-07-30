@@ -16,7 +16,7 @@ func tablePrismaInventoryWorkloadContainerImage(ctx context.Context) *plugin.Tab
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaInventoryWorkloadContainerImages,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "name",
 				Description: "The name of the container image.",
@@ -34,7 +34,7 @@ func tablePrismaInventoryWorkloadContainerImage(ctx context.Context) *plugin.Tab
 				Type:        proto.ColumnType_INT,
 			},
 			{
-				Name:        "scanPassed",
+				Name:        "scan_passed",
 				Description: "Indicates if the scan passed.",
 				Type:        proto.ColumnType_BOOL,
 			},
@@ -44,7 +44,7 @@ func tablePrismaInventoryWorkloadContainerImage(ctx context.Context) *plugin.Tab
 				Type:        proto.ColumnType_BOOL,
 			},
 			{
-				Name:        "relatedImages",
+				Name:        "related_images",
 				Description: "The number of related images.",
 				Type:        proto.ColumnType_INT,
 			},
@@ -58,7 +58,7 @@ func tablePrismaInventoryWorkloadContainerImage(ctx context.Context) *plugin.Tab
 				Description: "The vulnerability funnel details.",
 				Type:        proto.ColumnType_JSON,
 			},
-		},
+		}),
 	}
 }
 

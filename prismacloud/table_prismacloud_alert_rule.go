@@ -16,7 +16,7 @@ func tablePrismaAlertRule(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaAlertRules,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "name",
 				Description: "Name of the rule.",
@@ -143,7 +143,7 @@ func tablePrismaAlertRule(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},
-		},
+		}),
 	}
 }
 

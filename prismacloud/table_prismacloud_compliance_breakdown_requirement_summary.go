@@ -21,7 +21,7 @@ func tablePrismaComplianceBreakdownRequirementSummary(ctx context.Context) *plug
 			Hydrate:       listPrismaComplianceBreakdownRequirementSummary,
 			KeyColumns:    commonComplianceBreakdownKeyQualColumns(),
 		},
-		Columns: complianceBreakdownCommonFilterColumns([]*plugin.Column{
+		Columns: commonColumns(complianceBreakdownCommonFilterColumns([]*plugin.Column{
 			{
 				Name:        "id",
 				Description: "The unique identifier for the requirement.",
@@ -45,7 +45,7 @@ func tablePrismaComplianceBreakdownRequirementSummary(ctx context.Context) *plug
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("RequirementName"),
 			},
-		}),
+		})),
 	}
 }
 
@@ -77,7 +77,8 @@ func listPrismaComplianceBreakdownRequirementSummary(ctx context.Context, d *plu
 		return nil, err
 	}
 
-	// For any of the query parameter it the returning the same row. However, the query param is required to make the the API call do hardcoded the value.
+	// For any of the query parameter it the returning the same row. However, the query param is required to make the the API call do hardcoded the value, and added it as a optional qual.
+	// If we are not specifying any of the parameter the API doesn't return any result.
 	query := url.Values{
 		"cloud.account": []string{account.Name},
 	}

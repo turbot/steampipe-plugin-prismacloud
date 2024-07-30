@@ -14,6 +14,7 @@ The `prismacloud_alert` table in Steampipe provides information about alerts wit
 **Important notes:**
 - For improved performance, it is advised that you use the optional qual `alert_time` to limit the result set to a specific time period.
 - This table supports optional quals. Queries with optional quals are optimised to use CloudWatch filters. Optional quals are supported for the following columns:
+  - `alert_time`
   - `status`
   - `policy_id`
   - `policy_type`
@@ -22,6 +23,7 @@ The `prismacloud_alert` table in Steampipe provides information about alerts wit
 ## Examples
 
 ### Basic Info
+
 Retrieve basic information about Prisma Cloud alerts, such as alert ID, status, and timestamps. This query helps you understand the overall configuration and details of your alerts.
 
 ```sql+postgres
@@ -53,6 +55,7 @@ where
 ```
 
 ### List open alerts
+
 Get a list of all Prisma Cloud alerts filtered by status. This is useful for identifying which alerts are currently active.
 
 ```sql+postgres
@@ -80,6 +83,7 @@ where
 ```
 
 ### Alerts with high risk
+
 Identify alerts that have a high-risk level. This helps in prioritizing alerts based on their risk details.
 
 ```sql+postgres
@@ -107,6 +111,7 @@ where
 ```
 
 ### Alerts and associated policies
+
 Get a list of alerts along with their associated policies by joining with the `prismacloud_policy` table. This helps in understanding the policies that are related to specific alerts.
 
 ```sql+postgres

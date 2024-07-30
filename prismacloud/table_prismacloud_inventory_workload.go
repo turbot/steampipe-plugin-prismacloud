@@ -16,7 +16,7 @@ func tablePrismaInventoryWorkload(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: listPrismaInventoryWorkloads,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "container_images_build",
 				Description: "Number of container images in the build stage.",
@@ -65,7 +65,7 @@ func tablePrismaInventoryWorkload(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Hosts.CloudProviders"),
 			},
-		},
+		}),
 	}
 }
 

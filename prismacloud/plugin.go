@@ -19,6 +19,12 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 				ShouldIgnoreErrorFunc: isNotFoundError([]string{"object not found"}),
 			},
 		},
+		ConnectionKeyColumns: []plugin.ConnectionKeyColumn{
+			{
+				Name:    "email",
+				Hydrate: getCurrentUserEmail,
+			},
+		},
 		TableMap: map[string]*plugin.Table{
 			"prismacloud_account":    tablePrismaAccount(ctx),
 			"prismacloud_alert":      tablePrismaAlert(ctx),

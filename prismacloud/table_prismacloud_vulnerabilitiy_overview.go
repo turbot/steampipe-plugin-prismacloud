@@ -18,7 +18,7 @@ func tablePrismaVulnerabilitiyOverview(ctx context.Context) *plugin.Table {
 		List: &plugin.ListConfig{
 			Hydrate: getPrismaVulnerabilitiyOverview,
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "total_vulnerable_runtime_assets",
 				Description: "The name of the standard.",
@@ -42,7 +42,7 @@ func tablePrismaVulnerabilitiyOverview(ctx context.Context) *plugin.Table {
 				Description: "Indicates if the standard is a system default.",
 				Type:        proto.ColumnType_JSON,
 			},
-		},
+		}),
 	}
 }
 

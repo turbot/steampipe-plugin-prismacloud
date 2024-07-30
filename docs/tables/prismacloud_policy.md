@@ -11,10 +11,23 @@ The Prisma Cloud policy table in Steampipe provides you with information about p
 
 The `prismacloud_policy` table in Steampipe provides information about policies within Prisma Cloud. This table allows you to query details such as the policy's name, type, severity, and more, enabling you to manage and monitor your policies effectively.
 
+**Important Notes**
+- For improved performance, it is recommended to use the optional qualifiers (quals) to limit the result set.
+- Queries with optional qualifiers are optimized to use filters. The following columns support optional qualifiers:
+  - `severity`
+  - `cloud_type`
+  - `policy_type`
+  - `enabled`
+  - `policy_mode`
+  - `remediable`
+  - `name`
+  - `policy_compliance_standard_name`
+  - `policy_compliance_requirement_name`
+  - `policy_compliance_section_id`
+
 ## Examples
 
 ### Basic Info
-
 Retrieve basic information about Prisma Cloud policies, such as policy ID, name, type, and severity. This query helps you to understand the overall configuration and details of your policies.
 
 ```sql+postgres
@@ -40,7 +53,6 @@ from
 ```
 
 ### List of enabled policies
-
 Get a list of all enabled Prisma Cloud policies. This is useful for identifying which policies are currently active and enabled.
 
 ```sql+postgres
@@ -66,7 +78,6 @@ where
 ```
 
 ### Policies created by a specific user
-
 Identify policies that were created by a specific user. This helps in tracking which policies were introduced by which administrators or team members.
 
 ```sql+postgres
@@ -94,7 +105,6 @@ where
 ```
 
 ### List of policies with high severity
-
 Retrieve policies that have a high severity level. This helps in prioritizing policies that may require more immediate attention or enforcement.
 
 ```sql+postgres
@@ -120,7 +130,6 @@ where
 ```
 
 ### Policies with specific compliance metadata
-
 Identify policies associated with specific compliance metadata. This helps in ensuring that certain compliance requirements are being met by the policies.
 
 ```sql+postgres
@@ -146,7 +155,6 @@ where
 ```
 
 ### Policies with open alerts
-
 Get a list of policies that have open alerts. This helps in identifying which policies have ongoing issues that need attention.
 
 ```sql+postgres

@@ -22,7 +22,7 @@ func tablePrismaVulnerabilitiyAsset(ctx context.Context) *plugin.Table {
 				{Name: "severities", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "asset_type",
 				Description: "The type of asset. Possible values are: iac, package, deployedImage, serverlessFunction, host, registryImage, vmImage.",
@@ -55,7 +55,7 @@ func tablePrismaVulnerabilitiyAsset(ctx context.Context) *plugin.Table {
 				Description: "Statistics of the vulnerable assets.",
 				Type:        proto.ColumnType_JSON,
 			},
-		},
+		}),
 	}
 }
 

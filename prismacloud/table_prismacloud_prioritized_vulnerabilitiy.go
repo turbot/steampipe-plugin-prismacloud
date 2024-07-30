@@ -23,7 +23,7 @@ func tablePrismaPrioritizedVulnerabilitiy(ctx context.Context) *plugin.Table {
 				{Name: "life_cycle", Require: plugin.Required, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
-		Columns: []*plugin.Column{
+		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "asset_type",
 				Description: "The type of asset. Possible values are: iac, package, deployedImage, serverlessFunction, host, registryImage, vmImage.",
@@ -107,7 +107,7 @@ func tablePrismaPrioritizedVulnerabilitiy(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_INT,
 				Transform:   transform.FromField("PackageInUse.AssetCount"),
 			},
-		},
+		}),
 	}
 }
 
