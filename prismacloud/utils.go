@@ -204,7 +204,7 @@ func buildVulnerabilityAssetsQueryParameter(_ context.Context, d *plugin.QueryDa
 	return queryParameter
 }
 
-// // COnnection key quals
+// Connection key quals
 // if the caching is required other than per connection, build a cache key for the call and use it in Memoize
 // since getCurrentUserProfile is a call, caching should be per connection
 var getCurrentUserProfileMemoized = plugin.HydrateFunc(getCurrentUserProfileUncached).Memoize(memoize.WithCacheKeyFunction(getCurrentUserProfileCacheKey))
