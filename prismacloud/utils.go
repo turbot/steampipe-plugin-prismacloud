@@ -5,7 +5,8 @@ import (
 	"fmt"
 	"net/url"
 
-	"github.com/paloaltonetworks/prisma-cloud-go/user/profile"
+	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/api"
+	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/model"
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/memoize"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
@@ -220,7 +221,7 @@ func getCurrentUserEmail(ctx context.Context, d *plugin.QueryData, h *plugin.Hyd
 		return nil, err
 	}
 
-	userDetails := userInfo.(profile.Profile)
+	userDetails := userInfo.(*model.UserProfile)
 
 	return userDetails.Email, nil
 }
@@ -232,7 +233,7 @@ func getCurrentUserProfileUncached(ctx context.Context, d *plugin.QueryData, h *
 		return nil, err
 	}
 
-	profile, err := profile.Get(conn, "me")
+	profile, err := api.GetCurrentUserProfile(conn)
 	if err != nil {
 		plugin.Logger(ctx).Error("getCurrentUserProfileUncached", "api_error", err)
 		return nil, err
