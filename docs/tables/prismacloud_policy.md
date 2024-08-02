@@ -178,3 +178,183 @@ from
 where
   open_alerts_count > 0;
 ```
+
+### Alerts and associated policies
+Get a list of alerts along with their associated policies by joining with the `prismacloud_policy` table. This helps in understanding the policies that are related to specific alerts.
+
+```sql+postgres
+select
+  a.id as alert_id,
+  a.status,
+  a.alert_time,
+  p.id as policy_id,
+  p.name as policy_name,
+  p.policy_type
+from
+  prismacloud_alert a
+join
+  prismacloud_policy p on a.policy ->> 'policy_id' = p.id and a.policy ->> 'policy_type' = p.policy_type;
+```
+
+```sql+sqlite
+select
+  a.id as alert_id,
+  a.status,
+  a.alert_time,
+  p.id as policy_id,
+  p.name as policy_name,
+  p.policy_type
+from
+  prismacloud_alert a
+join
+  prismacloud_policy p on json_extract(a.policy, '$.policy_id') = p.id and json_extract(a.policy, '$.policy_type') = p.policy_type;
+```
+
+### Get the latest alerts for a specific policy
+Retrieve the most recent alerts from Prisma Cloud that have occurred within the last day. This query helps you stay updated on new alerts and their details.
+
+```sql+postgres
+select
+  id,
+  status,
+  alert_time,
+  triggered_by,
+  event_occurred
+from
+  prismacloud_alert
+where
+  alert_time >= now() - interval '1 day'
+  and policy_id = '2378dbf4-b104-4bda-9b05-7417affbba3f';
+```
+
+```sql+sqlite
+select
+  id,
+  status,
+  alert_time,
+  triggered_by,
+  event_occurred
+from
+  prismacloud_alert
+where
+  alert_time >= datetime('now', '-1 day')
+  and policy_id = '2378dbf4-b104-4bda-9b05-7417affbba3f';
+```
+
+### Count policies by policy type
+This query counts the number of policies grouped by policy type, helping you understand the distribution of policies across different policy categories.
+
+```sql+postgres
+select
+  policy_type,
+  count(policy_id) as policy_count
+from
+  prismacloud_policy
+group by
+  policy_type;
+```
+
+```sql+sqlite
+select
+  policy_type,
+  count(policy_id) as policy_count
+from
+  prismacloud_policy
+group by
+  policy_type;
+```
+
+### Count alerts by policy type
+This query counts the number of alerts grouped by policy type, helping you understand the distribution of alerts across different policy categories.
+
+```sql+postgres
+with alerts as (
+  select
+    id,
+    policy_type
+  from
+    prismacloud_alert
+)
+select
+  policy_type,
+  count(id) as alert_count
+from
+  alerts
+group by
+  policy_type
+order by
+  alert_count desc;
+```
+
+```sql+sqlite
+with alerts as (
+  select
+    id,
+    policy_type
+  from
+    prismacloud_alert
+)
+select
+  policy_type,
+  count(id) as alert_count
+from
+  alerts
+group by
+  policy_type
+order by
+  alert_count desc;
+```
+
+### Count policies by mode
+This query counts the number of policies grouped by their mode, helping you understand the distribution of policies across different modes.
+
+```sql+postgres
+select
+  policy_mode,
+  count(policy_id) as policy_count
+from
+  prismacloud_policy
+group by
+  policy_mode
+order by
+  policy_count desc;
+```
+
+```sql+sqlite
+select
+  policy_mode,
+  count(policy_id) as policy_count
+from
+  prismacloud_policy
+group by
+  policy_mode
+order by
+  policy_count desc;
+```
+
+### List policies assigned to each compliance standard
+This query retrieves the list of policies assigned to each compliance standard, including the compliance standard's name, the number of policies assigned, and details about each policy.
+
+```sql+postgres
+select
+  c.name as compliance_name,
+  c.policies_assigned_count as compliance_policies_assigned_count,
+  p.policy_id,
+  p.policy_type,
+  p.name as policy_name
+from
+  prismacloud_compliance_standard as c
+  join prismacloud_policy as p on p.compliance_standard_name = c.name;
+```
+
+```sql+sqlite
+select
+  c.name as compliance_name,
+  c.policies_assigned_count as compliance_policies_assigned_count,
+  p.policy_id,
+  p.policy_type,
+  p.name as policy_name
+from
+  prismacloud_compliance_standard as c
+  join prismacloud_policy as p on p.compliance_standard_name = c.name;
+```

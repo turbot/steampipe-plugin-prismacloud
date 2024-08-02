@@ -9,6 +9,7 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
 func tablePrismaAlert(ctx context.Context) *plugin.Table {
@@ -27,6 +28,9 @@ func tablePrismaAlert(ctx context.Context) *plugin.Table {
 				{Name: "policy_id", Require: plugin.Optional, Operators: []string{"="}},
 				{Name: "policy_type", Require: plugin.Optional, Operators: []string{"="}},
 				{Name: "policy_remediable", Require: plugin.Optional, Operators: []string{"=", "<>"}},
+				{Name: "policy_compliance_standard_name", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+				{Name: "policy_compliance_requirement_name", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
+				{Name: "policy_compliance_section_id", Require: plugin.Optional, CacheMatch: query_cache.CacheMatchExact},
 			},
 		},
 		Columns: commonColumns([]*plugin.Column{
@@ -57,6 +61,24 @@ func tablePrismaAlert(ctx context.Context) *plugin.Table {
 				Description: "The timestamp when the alert was triggered.",
 				Type:        proto.ColumnType_TIMESTAMP,
 				Transform:   transform.FromField("AlertTime").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
+			},
+			{
+				Name:        "policy_compliance_standard_name",
+				Description: "The name of the compliance standard associated with the policy.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("policy_compliance_standard_name"),
+			},
+			{
+				Name:        "policy_compliance_requirement_name",
+				Description: "The name of the compliance requirement associated with the policy.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("policy_compliance_requirement_name"),
+			},
+			{
+				Name:        "policy_compliance_section_id",
+				Description: "The ID of the compliance section associated with the policy.",
+				Type:        proto.ColumnType_STRING,
+				Transform:   transform.FromQual("policy_compliance_section_id"),
 			},
 			{
 				Name:        "event_occurred",
@@ -149,18 +171,15 @@ func listPrismaAlerts(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 		}
 	}
 
-	// Default to last 6 months
-	// The API is returning a huge amount of data for last 1 year. So set the default time range of 6 months.
 	timeRange := timerange.Absolute{
-		Start: time.Now().AddDate(0, -6, 0).Second() * 1000,
-		End:   time.Now().Second(),
+		End: int(time.Now().UnixMilli()),
 	}
 	st, et := getAlertStartTImeAndSearchEndTime(d)
 	if st != 0 {
-		timeRange.Start = st
+		timeRange.Start = int(st)
 	}
 	if et != 0 {
-		timeRange.End = et
+		timeRange.End = int(et)
 	}
 
 	req := alert.Request{
@@ -248,10 +267,13 @@ func getAlertFilter(keyQuals *plugin.QueryData) []alert.Filter {
 	var filter []alert.Filter
 
 	qualsMap := map[string]string{
-		"status":            "alert.status",
-		"policy_id":         "policy.id",
-		"policy_type":       "policy.type",
-		"policy_remediable": "policy.remediable",
+		"status":                             "alert.status",
+		"policy_id":                          "policy.id",
+		"policy_type":                        "policy.type",
+		"policy_remediable":                  "policy.remediable",
+		"policy_compliance_standard_name":    "policy.complianceStandard",
+		"policy_compliance_requirement_name": "policy.complianceRequirement",
+		"policy_compliance_section_id":       "policy.complianceSection",
 	}
 
 	for columnName, filterValue := range qualsMap {
@@ -290,20 +312,19 @@ func getAlertFilter(keyQuals *plugin.QueryData) []alert.Filter {
 	return filter
 }
 
-func getAlertStartTImeAndSearchEndTime(keyQuals *plugin.QueryData) (int, int) {
+func getAlertStartTImeAndSearchEndTime(keyQuals *plugin.QueryData) (int64, int64) {
 
-	st, et := 0, 0
+	st, et := int64(0), int64(0)
 
 	if keyQuals.Quals["alert_time"] != nil && !(len(keyQuals.Quals["alert_time"].Quals) > 1) {
-		for _, q := range keyQuals.Quals["period_start"].Quals {
+		for _, q := range keyQuals.Quals["alert_time"].Quals {
 			t := q.Value.GetTimestampValue().AsTime()
 			switch q.Operator {
 			case "=", ">=", ">":
-				st = t.Second() * 1000
-				et = time.Now().Second() * 1000
+				st = t.UnixMilli()
+				et = time.Now().UnixMilli()
 			case "<", "<=":
-				et = t.Second() * 1000
-				st = t.AddDate(0, -3, 0).Second() * 1000
+				et = t.UnixMilli()
 			}
 		}
 	}
