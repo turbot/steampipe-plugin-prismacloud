@@ -9,12 +9,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaInventoryWorkloadHost(ctx context.Context) *plugin.Table {
+func tablePrismacloudInventoryWorkloadHost(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_inventory_workload_host",
-		Description: "Query Prisma Cloud Inventory Workload Host.",
+		Description: "Prisma Cloud inventory workload host.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaInventoryWorkloadHosts,
+			Hydrate: listPrismacloudInventoryWorkloadHosts,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -51,16 +51,16 @@ func tablePrismaInventoryWorkloadHost(ctx context.Context) *plugin.Table {
 	}
 }
 
-func listPrismaInventoryWorkloadHosts(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudInventoryWorkloadHosts(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_workload_host.listPrismaInventoryWorkloadHosts", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_workload_host.listPrismacloudInventoryWorkloadHosts", "connection_error", err)
 		return nil, err
 	}
 
 	resp, err := api.GetInventoryWorkloadHosts(conn.JsonWebToken, "")
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_workload_host.listPrismaInventoryWorkloadHosts", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_workload_host.listPrismacloudInventoryWorkloadHosts", "api_error", err)
 		return nil, err
 	}
 
@@ -77,7 +77,7 @@ func listPrismaInventoryWorkloadHosts(ctx context.Context, d *plugin.QueryData, 
 	for resp.NextPageToken != "" {
 		resp, err = api.GetInventoryWorkloadHosts(conn.JsonWebToken, resp.NextPageToken)
 		if err != nil {
-			plugin.Logger(ctx).Error("prismacloud_inventory_workload_host.listPrismaInventoryWorkloadHosts", "paging_error", err)
+			plugin.Logger(ctx).Error("prismacloud_inventory_workload_host.listPrismacloudInventoryWorkloadHosts", "paging_error", err)
 			return nil, err
 		}
 

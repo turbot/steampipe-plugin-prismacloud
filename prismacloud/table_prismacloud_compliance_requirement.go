@@ -10,17 +10,17 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaComplianceRequirement(ctx context.Context) *plugin.Table {
+func tablePrismacloudComplianceRequirement(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_compliance_requirement",
 		Description: "List all available compliance requirement.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaComplianceRequirement,
+			Hydrate:    getPrismacloudComplianceRequirement,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
 		List: &plugin.ListConfig{
-			ParentHydrate: listPrismaComplianceStandards,
-			Hydrate:       listPrismaComplianceRequirements,
+			ParentHydrate: listPrismacloudComplianceStandards,
+			Hydrate:       listPrismacloudComplianceRequirements,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "compliance_id", Require: plugin.Optional},
 			},
@@ -100,7 +100,7 @@ func tablePrismaComplianceRequirement(ctx context.Context) *plugin.Table {
 				Name:        "requirement_sections",
 				Description: "All compliance requirement sections for the specified compliance requirement.",
 				Type:        proto.ColumnType_JSON,
-				Hydrate:     getPrismaComplianceRequirementSections,
+				Hydrate:     getPrismacloudComplianceRequirementSections,
 				Transform:   transform.FromValue(),
 			},
 
@@ -117,7 +117,7 @@ func tablePrismaComplianceRequirement(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaComplianceRequirements(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudComplianceRequirements(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	standardCompliance := h.Item.(*model.ComplianceStandard)
 
 	complianceId := standardCompliance.ID
@@ -129,13 +129,13 @@ func listPrismaComplianceRequirements(ctx context.Context, d *plugin.QueryData, 
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.listPrismaComplianceRequirements", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.listPrismacloudComplianceRequirements", "connection_error", err)
 		return nil, err
 	}
 
 	requirements, err := api.ListComplianceRequirements(conn, complianceId)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.listPrismaComplianceRequirements", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.listPrismacloudComplianceRequirements", "api_error", err)
 		return nil, err
 	}
 
@@ -155,7 +155,7 @@ func listPrismaComplianceRequirements(ctx context.Context, d *plugin.QueryData, 
 
 //// HYDRATE FUNCTION
 
-func getPrismaComplianceRequirement(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudComplianceRequirement(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("id")
 
 	// Empty check
@@ -165,13 +165,13 @@ func getPrismaComplianceRequirement(ctx context.Context, d *plugin.QueryData, _ 
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.getPrismaComplianceRequirement", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.getPrismacloudComplianceRequirement", "connection_error", err)
 		return nil, err
 	}
 
 	requirement, err := api.GetComplianceRequirement(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.getPrismaComplianceRequirement", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.getPrismacloudComplianceRequirement", "api_error", err)
 		return nil, err
 	}
 
@@ -182,18 +182,18 @@ func getPrismaComplianceRequirement(ctx context.Context, d *plugin.QueryData, _ 
 	return nil, nil
 }
 
-func getPrismaComplianceRequirementSections(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudComplianceRequirementSections(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	requirement := h.Item.(*model.ComplianceRequirement)
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.getPrismaComplianceRequirement", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.getPrismacloudComplianceRequirement", "connection_error", err)
 		return nil, err
 	}
 
 	requirementSessions, err := api.ListComplianceRequirementSections(conn, requirement.ID)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.getPrismaComplianceRequirement", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_requirement.getPrismacloudComplianceRequirement", "api_error", err)
 		return nil, err
 	}
 

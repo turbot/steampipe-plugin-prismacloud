@@ -12,12 +12,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
-func tablePrismaInventoryAssetExplorer(ctx context.Context) *plugin.Table {
+func tablePrismacloudInventoryAssetExplorer(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_inventory_asset_explorer",
-		Description: "Query Prisma Cloud Inventory Asset Explorer.",
+		Description: "Prisma Cloud inventory asset explorer.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaInventoryAssetExplorer,
+			Hydrate: listPrismacloudInventoryAssetExplorer,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "account_name", Require: plugin.Optional},
 				{Name: "cloud_type", Require: plugin.Optional},
@@ -192,10 +192,10 @@ func tablePrismaInventoryAssetExplorer(ctx context.Context) *plugin.Table {
 	}
 }
 
-func listPrismaInventoryAssetExplorer(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudInventoryAssetExplorer(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismaInventoryAssetExplorer", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismacloudInventoryAssetExplorer", "connection_error", err)
 		return nil, err
 	}
 
@@ -231,7 +231,7 @@ func listPrismaInventoryAssetExplorer(ctx context.Context, d *plugin.QueryData, 
 
 	resp, err := api.ListInventoryAssetExplorer(conn, query)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismaInventoryAssetExplorer", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismacloudInventoryAssetExplorer", "api_error", err)
 		return nil, err
 	}
 
@@ -249,7 +249,7 @@ func listPrismaInventoryAssetExplorer(ctx context.Context, d *plugin.QueryData, 
 		query.Set("pageToken", resp.NextPageToken)
 		resp, err = api.ListInventoryAssetExplorer(conn, query)
 		if err != nil {
-			plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismaInventoryAssetExplorer", "paging_error", err)
+			plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismacloudInventoryAssetExplorer", "paging_error", err)
 			return nil, err
 		}
 

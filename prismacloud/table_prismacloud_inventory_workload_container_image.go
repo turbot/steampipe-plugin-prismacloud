@@ -9,12 +9,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaInventoryWorkloadContainerImage(ctx context.Context) *plugin.Table {
+func tablePrismacloudInventoryWorkloadContainerImage(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_inventory_workload_container_image",
-		Description: "Query Prisma Cloud Inventory Workload Container Image.",
+		Description: "Query Prisma Cloud inventory workload container image.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaInventoryWorkloadContainerImages,
+			Hydrate: listPrismacloudInventoryWorkloadContainerImages,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -26,7 +26,7 @@ func tablePrismaInventoryWorkloadContainerImage(ctx context.Context) *plugin.Tab
 				Name:        "uai_id",
 				Description: "The unique identifier of the UAI.",
 				Type:        proto.ColumnType_STRING,
-				Transform: transform.FromField("UaiID"),
+				Transform:   transform.FromField("UaiID"),
 			},
 			{
 				Name:        "running_containers",
@@ -62,16 +62,16 @@ func tablePrismaInventoryWorkloadContainerImage(ctx context.Context) *plugin.Tab
 	}
 }
 
-func listPrismaInventoryWorkloadContainerImages(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudInventoryWorkloadContainerImages(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_workload_container_image.listPrismaInventoryWorkloadContainerImages", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_workload_container_image.listPrismacloudInventoryWorkloadContainerImages", "connection_error", err)
 		return nil, err
 	}
 
 	resp, err := api.GetInventoryWorkloadContainerImages(conn.JsonWebToken, "")
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_workload_container_image.listPrismaInventoryWorkloadContainerImages", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_workload_container_image.listPrismacloudInventoryWorkloadContainerImages", "api_error", err)
 		return nil, err
 	}
 
@@ -88,7 +88,7 @@ func listPrismaInventoryWorkloadContainerImages(ctx context.Context, d *plugin.Q
 	for resp.NextPageToken != "" {
 		resp, err = api.GetInventoryWorkloadContainerImages(conn.JsonWebToken, resp.NextPageToken)
 		if err != nil {
-			plugin.Logger(ctx).Error("prismacloud_inventory_workload_container_image.listPrismaInventoryWorkloadContainerImages", "paging_error", err)
+			plugin.Logger(ctx).Error("prismacloud_inventory_workload_container_image.listPrismacloudInventoryWorkloadContainerImages", "paging_error", err)
 			return nil, err
 		}
 

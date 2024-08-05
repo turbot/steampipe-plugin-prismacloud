@@ -15,12 +15,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
-func tablePrismaInventoryAssetView(ctx context.Context) *plugin.Table {
+func tablePrismacloudInventoryAssetView(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_inventory_asset_view",
-		Description: "Query Prisma Cloud Inventory Asset View.",
+		Description: "Prisma Cloud inventory asset view.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaInventoryAssetView,
+			Hydrate: listPrismacloudInventoryAssetView,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "account_name", Require: plugin.Optional},
 				{Name: "cloud_type_name", Require: plugin.Optional},
@@ -178,10 +178,10 @@ func tablePrismaInventoryAssetView(ctx context.Context) *plugin.Table {
 	}
 }
 
-func listPrismaInventoryAssetView(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudInventoryAssetView(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismaInventoryAssetView", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismacloudInventoryAssetView", "connection_error", err)
 		return nil, err
 	}
 
@@ -219,7 +219,7 @@ func listPrismaInventoryAssetView(ctx context.Context, d *plugin.QueryData, h *p
 
 	resp, err := api.ListInventoryAsset(conn, query)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismaInventoryAssetView", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_asset_explorer.listPrismacloudInventoryAssetView", "api_error", err)
 		return nil, err
 	}
 

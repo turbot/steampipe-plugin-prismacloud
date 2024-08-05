@@ -9,16 +9,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaTrustedAlertIp(ctx context.Context) *plugin.Table {
+func tablePrismacloudTrustedAlertIp(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_trusted_alert_ip",
 		Description: "List of trusted alert IPs in Prisma Cloud.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaTrustedAlertIp,
+			Hydrate:    getPrismacloudTrustedAlertIp,
 			KeyColumns: plugin.SingleColumn("uuid"),
 		},
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaTrustedAlertIps,
+			Hydrate: listPrismacloudTrustedAlertIps,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -57,16 +57,16 @@ func tablePrismaTrustedAlertIp(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaTrustedAlertIps(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudTrustedAlertIps(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.listPrismaTrustedAlertIps", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.listPrismacloudTrustedAlertIps", "connection_error", err)
 		return nil, err
 	}
 
 	alertIps, err := alertIp.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.listPrismaTrustedAlertIps", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.listPrismacloudTrustedAlertIps", "api_error", err)
 		return nil, err
 	}
 
@@ -86,7 +86,7 @@ func listPrismaTrustedAlertIps(ctx context.Context, d *plugin.QueryData, _ *plug
 
 //// HYDRATE FUNCTION
 
-func getPrismaTrustedAlertIp(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudTrustedAlertIp(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("uuid")
 
 	// Empty check
@@ -96,13 +96,13 @@ func getPrismaTrustedAlertIp(ctx context.Context, d *plugin.QueryData, h *plugin
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.getPrismaTrustedAlertIp", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.getPrismacloudTrustedAlertIp", "connection_error", err)
 		return nil, err
 	}
 
 	alertIp, err := alertIp.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.getPrismaTrustedAlertIp", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_trusted_alert_ip.getPrismacloudTrustedAlertIp", "api_error", err)
 		return nil, err
 	}
 

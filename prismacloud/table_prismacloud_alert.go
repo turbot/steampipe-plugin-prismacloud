@@ -12,16 +12,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
-func tablePrismaAlert(ctx context.Context) *plugin.Table {
+func tablePrismacloudAlert(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_alert",
 		Description: "List all information for prima cloud alerts.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaAlert,
+			Hydrate:    getPrismacloudAlert,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaAlerts,
+			Hydrate: listPrismacloudAlerts,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "alert_time", Require: plugin.Optional, Operators: []string{"=", ">=", "<=", ">", "<"}},
 				{Name: "status", Require: plugin.Optional, Operators: []string{"="}},
@@ -154,10 +154,10 @@ func tablePrismaAlert(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaAlerts(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudAlerts(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_alert.listPrismaAlerts", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_alert.listPrismacloudAlerts", "connection_error", err)
 		return nil, err
 	}
 
@@ -199,7 +199,7 @@ func listPrismaAlerts(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 
 	alerts, err := alert.List(conn, req)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_alert.listPrismaAlerts", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_alert.listPrismacloudAlerts", "api_error", err)
 		return nil, err
 	}
 	for _, alert := range alerts.Data {
@@ -218,7 +218,7 @@ func listPrismaAlerts(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 
 		alerts, err = alert.List(conn, req)
 		if err != nil {
-			plugin.Logger(ctx).Error("prismacloud_alert.listPrismaAlerts", "api_paging_error", err)
+			plugin.Logger(ctx).Error("prismacloud_alert.listPrismacloudAlerts", "api_paging_error", err)
 			return nil, err
 		}
 		for _, alert := range alerts.Data {
@@ -236,7 +236,7 @@ func listPrismaAlerts(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydrat
 
 //// HYDRATE FUNCTION
 
-func getPrismaAlert(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudAlert(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("id")
 
 	// Empty check
@@ -246,13 +246,13 @@ func getPrismaAlert(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateD
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_alert.getPrismaAlert", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_alert.getPrismacloudAlert", "connection_error", err)
 		return nil, err
 	}
 
 	alert, err := alert.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_alert.getPrismaAlert", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_alert.getPrismacloudAlert", "api_error", err)
 		return nil, err
 	}
 

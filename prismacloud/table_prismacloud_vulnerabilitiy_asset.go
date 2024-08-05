@@ -10,12 +10,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
-func tablePrismaVulnerabilitiyAsset(ctx context.Context) *plugin.Table {
+func tablePrismacloudVulnerabilitiyAsset(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_vulnerabilitiy_asset",
 		Description: "The asset summary of vulnerabilitiy.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaVulnerabilitiyAsset,
+			Hydrate: listPrismacloudVulnerabilitiyAsset,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "asset_type", Require: plugin.Optional},
 				{Name: "life_cycle", Require: plugin.Optional},
@@ -61,10 +61,10 @@ func tablePrismaVulnerabilitiyAsset(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaVulnerabilitiyAsset(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudVulnerabilitiyAsset(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_asset.getPrismaVulnerabilitiyAsset", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_asset.getPrismacloudVulnerabilitiyAsset", "connection_error", err)
 		return nil, err
 	}
 
@@ -72,7 +72,7 @@ func listPrismaVulnerabilitiyAsset(ctx context.Context, d *plugin.QueryData, _ *
 
 	assets, err := api.ListVulnerabilityAssets(conn, query)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_asset.getPrismaVulnerabilitiyAsset", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_asset.getPrismacloudVulnerabilitiyAsset", "api_error", err)
 		return nil, err
 	}
 

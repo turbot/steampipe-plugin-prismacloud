@@ -12,12 +12,12 @@ import (
 
 // Note: You need vulnerabilityDashboard feature with View permission to access this endpoint. Verify if your permission group includes this feature using the Get Permission Group by ID endpoint. You can also check this in the Prisma Cloud console by ensuring that Dashboard > Vulnerability is enabled.
 
-func tablePrismaPrioritizedVulnerabilitiy(ctx context.Context) *plugin.Table {
+func tablePrismacloudPrioritizedVulnerabilitiy(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_prioritized_vulnerabilitiy",
 		Description: "Returns the top-priority vulnerabilities which are aggregated based on the most urgent, exploitable, patchable, and vulnerable packages in use along with the number of assets they occur in.",
 		List: &plugin.ListConfig{
-			Hydrate: getPrismaPrioritizedVulnerabilities,
+			Hydrate: getPrismacloudPrioritizedVulnerabilities,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "asset_type", Require: plugin.Required, CacheMatch: query_cache.CacheMatchExact},
 				{Name: "life_cycle", Require: plugin.Required, CacheMatch: query_cache.CacheMatchExact},
@@ -113,10 +113,10 @@ func tablePrismaPrioritizedVulnerabilitiy(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func getPrismaPrioritizedVulnerabilities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudPrioritizedVulnerabilities(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_prioritized_vulnerabilitiy.getPrismaPrioritizedVulnerabilities", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_prioritized_vulnerabilitiy.getPrismacloudPrioritizedVulnerabilities", "connection_error", err)
 		return nil, err
 	}
 
@@ -125,7 +125,7 @@ func getPrismaPrioritizedVulnerabilities(ctx context.Context, d *plugin.QueryDat
 
 	vulnerability, err := api.GetPrioritizedVulnerability(conn, query)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_prioritized_vulnerabilitiy.getPrismaPrioritizedVulnerabilities", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_prioritized_vulnerabilitiy.getPrismacloudPrioritizedVulnerabilities", "api_error", err)
 		return nil, err
 	}
 

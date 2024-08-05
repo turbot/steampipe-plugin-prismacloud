@@ -10,12 +10,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaInventoryAPIEndpoint(ctx context.Context) *plugin.Table {
+func tablePrismacloudInventoryAPIEndpoint(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_inventory_api_endpoint",
-		Description: "Query Prisma Cloud Inventory API Endpoint.",
+		Description: "Query Prisma Cloud inventory API endpoint.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaInventoryAPIEndpoints,
+			Hydrate: listPrismacloudInventoryAPIEndpoints,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -131,10 +131,10 @@ func tablePrismaInventoryAPIEndpoint(ctx context.Context) *plugin.Table {
 	}
 }
 
-func listPrismaInventoryAPIEndpoints(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudInventoryAPIEndpoints(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_api_endpoint.listPrismaInventoryAPIEndpoints", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_api_endpoint.listPrismacloudInventoryAPIEndpoints", "connection_error", err)
 		return nil, err
 	}
 
@@ -147,14 +147,14 @@ func listPrismaInventoryAPIEndpoints(ctx context.Context, d *plugin.QueryData, h
 	}
 
 	req := map[string]interface{}{
-		"limit": fmt.Sprint(maxLimit),
-		"orderBy":"assetId",
-		"orderDirection":"desc",
+		"limit":          fmt.Sprint(maxLimit),
+		"orderBy":        "assetId",
+		"orderDirection": "desc",
 	}
 
 	resp, err := api.ListInventoryDiscoveredAPI(conn, req)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_api_endpoint.listPrismaInventoryAPIEndpoints", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_api_endpoint.listPrismacloudInventoryAPIEndpoints", "api_error", err)
 		return nil, err
 	}
 
@@ -172,7 +172,7 @@ func listPrismaInventoryAPIEndpoints(ctx context.Context, d *plugin.QueryData, h
 		req["nextPageToken"] = *resp.NextPageToken
 		resp, err = api.ListInventoryDiscoveredAPI(conn, req)
 		if err != nil {
-			plugin.Logger(ctx).Error("prismacloud_inventory_api_endpoint.listPrismaInventoryAPIEndpoints", "paging_error", err)
+			plugin.Logger(ctx).Error("prismacloud_inventory_api_endpoint.listPrismacloudInventoryAPIEndpoints", "paging_error", err)
 			return nil, err
 		}
 

@@ -9,16 +9,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaReport(ctx context.Context) *plugin.Table {
+func tablePrismacloudReport(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_report",
 		Description: "List of available alert and compliance reports.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaReport,
+			Hydrate:    getPrismacloudReport,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaReports,
+			Hydrate: listPrismacloudReports,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -110,16 +110,16 @@ func tablePrismaReport(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaReports(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudReports(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_report.listPrismaReports", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_report.listPrismacloudReports", "connection_error", err)
 		return nil, err
 	}
 
 	reports, err := report.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_report.listPrismaReports", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_report.listPrismacloudReports", "api_error", err)
 		return nil, err
 	}
 
@@ -139,7 +139,7 @@ func listPrismaReports(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydra
 
 //// HYDRATE FUNCTION
 
-func getPrismaReport(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudReport(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("id")
 
 	// Empty check
@@ -149,13 +149,13 @@ func getPrismaReport(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_report.getPrismaReport", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_report.getPrismacloudReport", "connection_error", err)
 		return nil, err
 	}
 
 	report, err := report.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_report.getPrismaReport", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_report.getPrismacloudReport", "api_error", err)
 		return nil, err
 	}
 

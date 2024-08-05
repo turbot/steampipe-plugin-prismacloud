@@ -9,12 +9,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaIAMRole(ctx context.Context) *plugin.Table {
+func tablePrismacloudIAMRole(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_iam_role",
 		Description: "List all available roles for the users.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaIAMRoles,
+			Hydrate: listPrismacloudIAMRoles,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -97,16 +97,16 @@ func tablePrismaIAMRole(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaIAMRoles(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudIAMRoles(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_user_role.listPrismaIAMRoles", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_user_role.listPrismacloudIAMRoles", "connection_error", err)
 		return nil, err
 	}
 
 	roles, err := role.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_user_role.listPrismaIAMRoles", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_user_role.listPrismacloudIAMRoles", "api_error", err)
 		return nil, err
 	}
 

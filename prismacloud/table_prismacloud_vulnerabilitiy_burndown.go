@@ -10,12 +10,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
-func tablePrismaVulnerabilitiyBurndown(ctx context.Context) *plugin.Table {
+func tablePrismacloudVulnerabilitiyBurndown(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_vulnerabilitiy_burndown",
 		Description: "The burndown summary of vulnerabilitiy.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaVulnerabilitiyBurndown,
+			Hydrate: listPrismacloudVulnerabilitiyBurndown,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "asset_type", Require: plugin.Required, CacheMatch: query_cache.CacheMatchExact},
 				{Name: "life_cycle", Require: plugin.Required, CacheMatch: query_cache.CacheMatchExact},
@@ -68,10 +68,10 @@ func tablePrismaVulnerabilitiyBurndown(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaVulnerabilitiyBurndown(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudVulnerabilitiyBurndown(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_burndown.getPrismaVulnerabilitiyBurndown", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_burndown.getPrismacloudVulnerabilitiyBurndown", "connection_error", err)
 		return nil, err
 	}
 
@@ -79,7 +79,7 @@ func listPrismaVulnerabilitiyBurndown(ctx context.Context, d *plugin.QueryData, 
 
 	vulnerability, err := api.ListVulnerabilityBurndown(conn, query)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_burndown.getPrismaVulnerabilitiyBurndown", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_burndown.getPrismacloudVulnerabilitiyBurndown", "api_error", err)
 		return nil, err
 	}
 

@@ -9,16 +9,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaComplianceStandard(ctx context.Context) *plugin.Table {
+func tablePrismacloudComplianceStandard(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_compliance_standard",
 		Description: "List all available compliance standard.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaComplianceStandard,
+			Hydrate:    getPrismacloudComplianceStandard,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaComplianceStandards,
+			Hydrate: listPrismacloudComplianceStandards,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -88,16 +88,16 @@ func tablePrismaComplianceStandard(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaComplianceStandards(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudComplianceStandards(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_standard.listPrismaComplianceStandards", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_standard.listPrismacloudComplianceStandards", "connection_error", err)
 		return nil, err
 	}
 
 	standards, err := api.ListComplianceStandards(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_standard.listPrismaComplianceStandards", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_standard.listPrismacloudComplianceStandards", "api_error", err)
 		return nil, err
 	}
 
@@ -117,7 +117,7 @@ func listPrismaComplianceStandards(ctx context.Context, d *plugin.QueryData, _ *
 
 //// HYDRATE FUNCTION
 
-func getPrismaComplianceStandard(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudComplianceStandard(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("id")
 
 	// Empty check
@@ -127,13 +127,13 @@ func getPrismaComplianceStandard(ctx context.Context, d *plugin.QueryData, _ *pl
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_standard.getPrismaComplianceStandard", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_standard.getPrismacloudComplianceStandard", "connection_error", err)
 		return nil, err
 	}
 
 	standard, err := api.GetComplianceStandard(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_standard.getPrismaComplianceStandard", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_standard.getPrismacloudComplianceStandard", "api_error", err)
 		return nil, err
 	}
 

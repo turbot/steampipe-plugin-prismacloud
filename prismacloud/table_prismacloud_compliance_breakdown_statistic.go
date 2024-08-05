@@ -12,13 +12,13 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaComplianceBreakdownStatistic(ctx context.Context) *plugin.Table {
+func tablePrismacloudComplianceBreakdownStatistic(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_compliance_breakdown_statistic",
 		Description: "List all available compliance breakdown statistics.",
 		List: &plugin.ListConfig{
-			ParentHydrate: listPrismaAccounts,
-			Hydrate:       listPrismaComplianceBreakdownStatistics,
+			ParentHydrate: listPrismacloudAccounts,
+			Hydrate:       listPrismacloudComplianceBreakdownStatistics,
 			KeyColumns:    commonComplianceBreakdownKeyQualColumns(),
 		},
 		Columns: commonColumns(complianceBreakdownCommonFilterColumns([]*plugin.Column{
@@ -110,7 +110,7 @@ type complianceBreakdownStatistic struct {
 
 //// LIST FUNCTION
 
-func listPrismaComplianceBreakdownStatistics(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudComplianceBreakdownStatistics(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 
 	account := h.Item.(account.Account)
 
@@ -123,7 +123,7 @@ func listPrismaComplianceBreakdownStatistics(ctx context.Context, d *plugin.Quer
 	}
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_statistic.listPrismaComplianceBreakdownStatistics", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_statistic.listPrismacloudComplianceBreakdownStatistics", "connection_error", err)
 		return nil, err
 	}
 
@@ -138,7 +138,7 @@ func listPrismaComplianceBreakdownStatistics(ctx context.Context, d *plugin.Quer
 	postures, err := api.LisComplianceBreakdownStatistics(conn, query)
 	if err != nil {
 
-		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_statistic.listPrismaComplianceBreakdownStatistics", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_statistic.listPrismacloudComplianceBreakdownStatistics", "api_error", err)
 		return nil, err
 	}
 

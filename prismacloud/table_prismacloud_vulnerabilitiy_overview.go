@@ -11,12 +11,12 @@ import (
 
 // Note: You need vulnerabilityDashboard feature with View permission to access this endpoint. Verify if your permission group includes this feature using the Get Permission Group by ID endpoint. You can also check this in the Prisma Cloud console by ensuring that Dashboard > Vulnerability is enabled.
 
-func tablePrismaVulnerabilitiyOverview(ctx context.Context) *plugin.Table {
+func tablePrismacloudVulnerabilitiyOverview(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_vulnerabilitiy_overview",
 		Description: "The overview summary of vulnerabilitiy.",
 		List: &plugin.ListConfig{
-			Hydrate: getPrismaVulnerabilitiyOverview,
+			Hydrate: getPrismacloudVulnerabilitiyOverview,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -48,16 +48,16 @@ func tablePrismaVulnerabilitiyOverview(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func getPrismaVulnerabilitiyOverview(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudVulnerabilitiyOverview(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_overview.getPrismaVulnerabilitiyOverview", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_overview.getPrismacloudVulnerabilitiyOverview", "connection_error", err)
 		return nil, err
 	}
 
 	vulnerability, err := api.GetVulnerabilityOverview(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_overview.getPrismaVulnerabilitiyOverview", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_vulnerabilitiy_overview.getPrismacloudVulnerabilitiyOverview", "api_error", err)
 		return nil, err
 	}
 

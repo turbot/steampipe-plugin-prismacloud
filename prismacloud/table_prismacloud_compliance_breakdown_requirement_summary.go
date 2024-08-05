@@ -12,13 +12,13 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaComplianceBreakdownRequirementSummary(ctx context.Context) *plugin.Table {
+func tablePrismacloudComplianceBreakdownRequirementSummary(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_compliance_breakdown_requirement_summary",
-		Description: "List all available compliance breakdown statistics of requirement summary.",
+		Description: "List all available compliance breakdown requirement summary.",
 		List: &plugin.ListConfig{
-			ParentHydrate: listPrismaAccounts,
-			Hydrate:       listPrismaComplianceBreakdownRequirementSummary,
+			ParentHydrate: listPrismacloudAccounts,
+			Hydrate:       listPrismacloudComplianceBreakdownRequirementSummary,
 			KeyColumns:    commonComplianceBreakdownKeyQualColumns(),
 		},
 		Columns: commonColumns(complianceBreakdownCommonFilterColumns([]*plugin.Column{
@@ -60,7 +60,7 @@ type BreakdownComplianceSectionSummary struct {
 
 //// LIST FUNCTION
 
-func listPrismaComplianceBreakdownRequirementSummary(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudComplianceBreakdownRequirementSummary(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	account := h.Item.(account.Account)
 
 	if d.EqualsQualString("account_name") != "" && d.EqualsQualString("account_name") != account.Name {
@@ -73,7 +73,7 @@ func listPrismaComplianceBreakdownRequirementSummary(ctx context.Context, d *plu
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_requirement_summary.listPrismaComplianceBreakdownRequirementSummary", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_requirement_summary.listPrismacloudComplianceBreakdownRequirementSummary", "connection_error", err)
 		return nil, err
 	}
 
@@ -88,7 +88,7 @@ func listPrismaComplianceBreakdownRequirementSummary(ctx context.Context, d *plu
 	postures, err := api.LisComplianceBreakdownStatistics(conn, query)
 	if err != nil {
 
-		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_requirement_summary.listPrismaComplianceBreakdownRequirementSummary", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_requirement_summary.listPrismacloudComplianceBreakdownRequirementSummary", "api_error", err)
 		return nil, err
 	}
 

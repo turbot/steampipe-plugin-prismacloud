@@ -12,12 +12,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaIAMPermission(ctx context.Context) *plugin.Table {
+func tablePrismacloudIAMPermission(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_iam_permission",
 		Description: "List all available permission for the accounts.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaIAMPermissions,
+			Hydrate: listPrismacloudIAMPermissions,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "permission_query", Require: plugin.Optional},
 			},
@@ -322,10 +322,10 @@ type IAMPerm struct {
 
 //// LIST FUNCTION
 
-func listPrismaIAMPermissions(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudIAMPermissions(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_iam_permission.listPrismaIAMPermissions", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_iam_permission.listPrismacloudIAMPermissions", "connection_error", err)
 		return nil, err
 	}
 
@@ -363,7 +363,7 @@ func listPrismaIAMPermissions(ctx context.Context, d *plugin.QueryData, _ *plugi
 
 	resp, err := api.ListIAMPermissions(conn, query, req)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_iam_permission.listPrismaIAMPermissions", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_iam_permission.listPrismacloudIAMPermissions", "api_error", err)
 		return nil, err
 	}
 
@@ -382,7 +382,7 @@ func listPrismaIAMPermissions(ctx context.Context, d *plugin.QueryData, _ *plugi
 		req["nextPageToken"] = resp.Data.NextPageToken
 		resp, err = api.ListIAMPermissions(conn, query, req)
 		if err != nil {
-			plugin.Logger(ctx).Error("prismacloud_iam_permission.listPrismaIAMPermissions", "api_paging_error", err)
+			plugin.Logger(ctx).Error("prismacloud_iam_permission.listPrismacloudIAMPermissions", "api_paging_error", err)
 			return nil, err
 		}
 

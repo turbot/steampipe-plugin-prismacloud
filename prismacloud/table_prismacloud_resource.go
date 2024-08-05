@@ -9,16 +9,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaResource(ctx context.Context) *plugin.Table {
+func tablePrismacloudResource(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_resource",
 		Description: "List of available resources in Prisma Cloud.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaResource,
+			Hydrate:    getPrismacloudResource,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaResources,
+			Hydrate: listPrismacloudResources,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -102,16 +102,16 @@ func tablePrismaResource(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaResources(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudResources(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_resource.listPrismaResources", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_resource.listPrismacloudResources", "connection_error", err)
 		return nil, err
 	}
 
 	resources, err := resource.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_resource.listPrismaResources", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_resource.listPrismacloudResources", "api_error", err)
 		return nil, err
 	}
 
@@ -131,7 +131,7 @@ func listPrismaResources(ctx context.Context, d *plugin.QueryData, _ *plugin.Hyd
 
 //// HYDRATE FUNCTION
 
-func getPrismaResource(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudResource(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("id")
 
 	// Empty check
@@ -141,13 +141,13 @@ func getPrismaResource(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_resource.getPrismaResource", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_resource.getPrismacloudResource", "connection_error", err)
 		return nil, err
 	}
 
 	resource, err := resource.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_resource.getPrismaResource", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_resource.getPrismacloudResource", "api_error", err)
 		return nil, err
 	}
 

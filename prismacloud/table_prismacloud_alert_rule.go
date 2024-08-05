@@ -9,12 +9,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaAlertRule(ctx context.Context) *plugin.Table {
+func tablePrismacloudAlertRule(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_alert_rule",
 		Description: "List all information for prima cloud alert rules.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaAlertRules,
+			Hydrate: listPrismacloudAlertRules,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -149,15 +149,15 @@ func tablePrismaAlertRule(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaAlertRules(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudAlertRules(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_alert_rule.listPrismaAlertRule", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_alert_rule.listPrismacloudAlertRule", "connection_error", err)
 		return nil, err
 	}
 	rules, err := rule.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_alert_rule.listPrismaAlertRule", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_alert_rule.listPrismacloudAlertRule", "api_error", err)
 		return nil, err
 	}
 	for _, rule := range rules {

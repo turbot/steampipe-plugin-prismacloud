@@ -14,16 +14,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
-func tablePrismaPolicy(ctx context.Context) *plugin.Table {
+func tablePrismacloudPolicy(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_policy",
 		Description: "List of available policies in Prisma Cloud.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaPolicy,
+			Hydrate:    getPrismacloudPolicy,
 			KeyColumns: plugin.SingleColumn("policy_id"),
 		},
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaPolicies,
+			Hydrate: listPrismacloudPolicies,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "cloud_type", Require: plugin.Optional},
 				{Name: "severity", Require: plugin.Optional},
@@ -149,7 +149,7 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 			{
 				Name:        "open_alerts_count",
 				Description: "The number of open alerts for the policy.",
-				Hydrate:     getPrismaOpenAlertCountForPolicy,
+				Hydrate:     getPrismacloudOpenAlertCountForPolicy,
 				Type:        proto.ColumnType_INT,
 				Transform:   transform.FromValue(),
 			},
@@ -217,10 +217,10 @@ func tablePrismaPolicy(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaPolicies(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudPolicies(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_policy.listPrismaPolicies", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.listPrismacloudPolicies", "connection_error", err)
 		return nil, err
 	}
 
@@ -228,7 +228,7 @@ func listPrismaPolicies(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 
 	policies, err := policy.List(conn, query)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_policy.listPrismaPolicies", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.listPrismacloudPolicies", "api_error", err)
 		return nil, err
 	}
 
@@ -246,7 +246,7 @@ func listPrismaPolicies(ctx context.Context, d *plugin.QueryData, _ *plugin.Hydr
 
 //// HYDRATE FUNCTION
 
-func getPrismaPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("policy_id")
 
 	// Empty check
@@ -256,20 +256,20 @@ func getPrismaPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrate
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_policy.getPrismaPolicy", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.getPrismacloudPolicy", "connection_error", err)
 		return nil, err
 	}
 
 	policy, err := policy.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_policy.getPrismaPolicy", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.getPrismacloudPolicy", "api_error", err)
 		return nil, err
 	}
 
 	return policy, nil
 }
 
-func getPrismaOpenAlertCountForPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudOpenAlertCountForPolicy(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	policy := h.Item.(policy.Policy)
 
 	type filterMap map[string]string
@@ -287,7 +287,7 @@ func getPrismaOpenAlertCountForPolicy(ctx context.Context, d *plugin.QueryData, 
 	}
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_policy.getPrismaOpenAlertCountForPolicy", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.getPrismacloudOpenAlertCountForPolicy", "connection_error", err)
 		return nil, err
 	}
 
@@ -303,7 +303,7 @@ func getPrismaOpenAlertCountForPolicy(ctx context.Context, d *plugin.QueryData, 
 		if strings.Contains(err.Error(), "404") {
 			return 0, nil
 		}
-		plugin.Logger(ctx).Error("prismacloud_policy.getPrismaOpenAlertCountForPolicy", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_policy.getPrismacloudOpenAlertCountForPolicy", "api_error", err)
 		return nil, err
 	}
 
@@ -313,7 +313,7 @@ func getPrismaOpenAlertCountForPolicy(ctx context.Context, d *plugin.QueryData, 
 		req["nextPageToken"] = results.NextPageToken
 		results, err = api.GetAlertCountOfPolicies(conn, req)
 		if err != nil {
-			plugin.Logger(ctx).Error("prismacloud_policy.getPrismaOpenAlertCountForPolicy", "paging_error", err)
+			plugin.Logger(ctx).Error("prismacloud_policy.getPrismacloudOpenAlertCountForPolicy", "paging_error", err)
 			return nil, err
 		}
 		policies = append(policies, results.Policies...)

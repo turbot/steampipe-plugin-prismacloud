@@ -9,16 +9,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaPermissionGroup(ctx context.Context) *plugin.Table {
+func tablePrismacloudPermissionGroup(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_permission_group",
 		Description: "List of available permission groups.",
 		Get: &plugin.GetConfig{
-			Hydrate:    getPrismaPermissionGroup,
+			Hydrate:    getPrismacloudPermissionGroup,
 			KeyColumns: plugin.SingleColumn("id"),
 		},
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaPermissionGroups,
+			Hydrate: listPrismacloudPermissionGroups,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -102,16 +102,16 @@ func tablePrismaPermissionGroup(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaPermissionGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudPermissionGroups(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_permission_group.listPrismaPermissionGroups", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_permission_group.listPrismacloudPermissionGroups", "connection_error", err)
 		return nil, err
 	}
 
 	permissions, err := permission_group.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_permission_group.listPrismaPermissionGroups", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_permission_group.listPrismacloudPermissionGroups", "api_error", err)
 		return nil, err
 	}
 
@@ -131,7 +131,7 @@ func listPrismaPermissionGroups(ctx context.Context, d *plugin.QueryData, _ *plu
 
 //// HYDRATE FUNCTION
 
-func getPrismaPermissionGroup(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func getPrismacloudPermissionGroup(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	id := d.EqualsQualString("id")
 
 	// Empty check
@@ -141,13 +141,13 @@ func getPrismaPermissionGroup(ctx context.Context, d *plugin.QueryData, h *plugi
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_permission_group.getPrismaPermissionGroup", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_permission_group.getPrismacloudPermissionGroup", "connection_error", err)
 		return nil, err
 	}
 
 	permission, err := permission_group.Get(conn, id)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_permission_group.getPrismaPermissionGroup", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_permission_group.getPrismacloudPermissionGroup", "api_error", err)
 		return nil, err
 	}
 

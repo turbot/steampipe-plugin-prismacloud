@@ -9,12 +9,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaInventoryWorkload(ctx context.Context) *plugin.Table {
+func tablePrismacloudInventoryWorkload(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_inventory_workload",
-		Description: "Query Prisma Cloud Inventory Workload summary.",
+		Description: "Prisma Cloud inventory workload summary.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaInventoryWorkloads,
+			Hydrate: listPrismacloudInventoryWorkloads,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -69,16 +69,16 @@ func tablePrismaInventoryWorkload(ctx context.Context) *plugin.Table {
 	}
 }
 
-func listPrismaInventoryWorkloads(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudInventoryWorkloads(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_workload.listPrismaInventoryWorkloads", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_workload.listPrismacloudInventoryWorkloads", "connection_error", err)
 		return nil, err
 	}
 
 	resp, err := api.GetInventoryWorkloads(conn.JsonWebToken)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_inventory_workload.listPrismaInventoryWorkloads", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_inventory_workload.listPrismacloudInventoryWorkloads", "api_error", err)
 		return nil, err
 	}
 

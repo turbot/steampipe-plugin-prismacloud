@@ -9,12 +9,12 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
-func tablePrismaAccount(ctx context.Context) *plugin.Table {
+func tablePrismacloudAccount(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_account",
 		Description: "List all cloud accounts onboarded onto the Prisma Cloud platform.",
 		List: &plugin.ListConfig{
-			Hydrate: listPrismaAccounts,
+			Hydrate: listPrismacloudAccounts,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
@@ -113,16 +113,16 @@ func tablePrismaAccount(ctx context.Context) *plugin.Table {
 
 //// LIST FUNCTION
 
-func listPrismaAccounts(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudAccounts(ctx context.Context, d *plugin.QueryData, _ *plugin.HydrateData) (interface{}, error) {
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_account.listPrismaAccounts", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_account.listPrismacloudAccounts", "connection_error", err)
 		return nil, err
 	}
 
 	accounts, err := account.List(conn)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_account.listPrismaAccounts", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_account.listPrismacloudAccounts", "api_error", err)
 		return nil, err
 	}
 

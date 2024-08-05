@@ -13,13 +13,13 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
 )
 
-func tablePrismaComplianceBreakdownSummary(ctx context.Context) *plugin.Table {
+func tablePrismacloudComplianceBreakdownSummary(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_compliance_breakdown_summary",
 		Description: "List all available compliance breakdown summary.",
 		List: &plugin.ListConfig{
-			ParentHydrate: listPrismaAccounts,
-			Hydrate:       listPrismaComplianceBreakdownSummary,
+			ParentHydrate: listPrismacloudAccounts,
+			Hydrate:       listPrismacloudComplianceBreakdownSummary,
 			KeyColumns: plugin.KeyColumnSlice{
 				{Name: "account_name", Require: plugin.Optional},
 				{Name: "cloud_type", Require: plugin.Optional},
@@ -89,12 +89,12 @@ type complianceBreakdownSummary struct {
 
 //// LIST FUNCTION
 
-func listPrismaComplianceBreakdownSummary(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
+func listPrismacloudComplianceBreakdownSummary(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
 	account := h.Item.(account.Account)
 
 	conn, err := connect(ctx, d)
 	if err != nil {
-		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_summary.listPrismaComplianceBreakdownSummary", "connection_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_summary.listPrismacloudComplianceBreakdownSummary", "connection_error", err)
 		return nil, err
 	}
 
@@ -125,7 +125,7 @@ func listPrismaComplianceBreakdownSummary(ctx context.Context, d *plugin.QueryDa
 	postures, err := api.LisComplianceBreakdownStatistics(conn, query)
 	if err != nil {
 
-		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_summary.listPrismaComplianceBreakdownSummary", "api_error", err)
+		plugin.Logger(ctx).Error("prismacloud_compliance_breakdown_summary.listPrismacloudComplianceBreakdownSummary", "api_error", err)
 		return nil, err
 	}
 
