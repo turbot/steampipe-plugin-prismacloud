@@ -37,7 +37,7 @@ func tablePrismacloudResource(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 			},
 			{
-				Name:        "type",
+				Name:        "resource_list_type",
 				Description: "The type of the resource.",
 				Type:        proto.ColumnType_STRING,
 			},
@@ -53,39 +53,8 @@ func tablePrismacloudResource(ctx context.Context) *plugin.Table {
 				Transform:   transform.FromField("LastModifiedTs").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
-				Name:        "accept_account_groups",
-				Description: "Indicates if the resource accepts account groups.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "accept_resource_lists",
-				Description: "Indicates if the resource accepts resource lists.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "accept_code_repositories",
-				Description: "Indicates if the resource accepts code repositories.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "custom",
-				Description: "Indicates if the resource is custom.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "deleted",
-				Description: "Indicates if the resource has been deleted.",
-				Type:        proto.ColumnType_BOOL,
-			},
-
-			{
-				Name:        "associated_roles",
-				Description: "The roles associated with the resource.",
-				Type:        proto.ColumnType_JSON,
-			},
-			{
-				Name:        "features",
-				Description: "The features associated with the resource.",
+				Name:        "members",
+				Description: "The members associated with the resource.",
 				Type:        proto.ColumnType_JSON,
 			},
 
