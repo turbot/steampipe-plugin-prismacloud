@@ -48,11 +48,6 @@ func tablePrismacloudInventoryAPIEndpoint(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_INT,
 			},
 			{
-				Name:        "workloads",
-				Description: "The workloads associated with the asset.",
-				Type:        proto.ColumnType_JSON,
-			},
-			{
 				Name:        "service_name",
 				Description: "The name of the service.",
 				Type:        proto.ColumnType_STRING,
@@ -112,6 +107,11 @@ func tablePrismacloudInventoryAPIEndpoint(ctx context.Context) *plugin.Table {
 				Description: "The count of items.",
 				Type:        proto.ColumnType_INT,
 				Transform:   transform.FromField("Count"),
+			},
+			{
+				Name:        "workloads",
+				Description: "The workloads associated with the asset.",
+				Type:        proto.ColumnType_JSON,
 			},
 			{
 				Name:        "path_risk_factors",
