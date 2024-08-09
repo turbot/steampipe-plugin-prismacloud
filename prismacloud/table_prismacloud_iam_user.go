@@ -60,8 +60,8 @@ func tablePrismacloudIAMUser(ctx context.Context) *plugin.Table {
 			{
 				Name:        "access_key_expiration",
 				Description: "Expiration time of the access key.",
-				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("AccessKeyExpiration"),
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("AccessKeyExpiration").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "access_key_name",
@@ -95,8 +95,8 @@ func tablePrismacloudIAMUser(ctx context.Context) *plugin.Table {
 			{
 				Name:        "last_login_ts",
 				Description: "Timestamp of the last login.",
-				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("LastLoginTs"),
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("LastLoginTs").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "last_modified_by",
@@ -107,8 +107,8 @@ func tablePrismacloudIAMUser(ctx context.Context) *plugin.Table {
 			{
 				Name:        "last_modified_ts",
 				Description: "Timestamp of the last modification.",
-				Type:        proto.ColumnType_INT,
-				Transform:   transform.FromField("LastModifiedTs"),
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("LastModifiedTs").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "access_keys_count",

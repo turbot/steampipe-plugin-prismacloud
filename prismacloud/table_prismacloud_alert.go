@@ -83,7 +83,8 @@ func tablePrismacloudAlert(ctx context.Context) *plugin.Table {
 			{
 				Name:        "event_occurred",
 				Description: "The timestamp when the event occurred.",
-				Type:        proto.ColumnType_INT,
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("EventOccurred").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "triggered_by",
