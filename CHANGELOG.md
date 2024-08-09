@@ -1,4 +1,10 @@
-## v0.0.1 [2021-08-05]
+## v0.0.2 [2024-08-09]
+
+_Bug fixes_
+
+- Fixed the plugin's brand color.
+
+## v0.0.1 [2024-08-09]
 
 _What's new?_
 
