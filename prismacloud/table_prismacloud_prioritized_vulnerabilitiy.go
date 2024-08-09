@@ -121,7 +121,6 @@ func getPrismacloudPrioritizedVulnerabilities(ctx context.Context, d *plugin.Que
 	}
 
 	query := buildPrioritizedVulnerabilitiesQueryParameter(ctx, d)
-	plugin.Logger(ctx).Error("Query ====>>>", query)
 
 	vulnerability, err := api.GetPrioritizedVulnerability(conn, query)
 	if err != nil {
