@@ -5,8 +5,8 @@ icon_url: "/images/plugins/turbot/prismacloud.svg"
 brand_color: "#EF5B0C"
 display_name: "Prisma Cloud"
 short_name: "prismacloud"
-description: "Steampipe plugin for querying Prisma Cloud Accounts, Users, and other resources."
-og_description: "Use SQL to query accounts, users, reports and more from Prisma Cloud. Open source CLI. No DB required."
+description: "Steampipe plugin for querying Prisma Cloud accounts, alerts, users, and other resources."
+og_description: "Use SQL to query accounts, alerts, users, reports and more from Prisma Cloud. Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/prismacloud-social-graphic.png"
 engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
@@ -86,7 +86,7 @@ connection "prismacloud" {
   # token = "eyJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3NLZXlJZCI6IjA4Y...H6BNc_Xonw"
 
   # Customer name for the Prisma Cloud account.
-  # customer_name = "My Name - 839236897770856499033"
+  # customer_name = "My Name - 123236897770856499123"
 
   # Protocol to be used (http or https).
   # protocol = "https"

@@ -13,6 +13,5 @@ updates:
       separator: "-"
     assignees:
       - "misraved"
-      - "madhushreeray30"
     labels:
       - "dependencies"

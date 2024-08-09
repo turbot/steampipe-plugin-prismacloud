@@ -3,7 +3,7 @@ connection "prismacloud" {
 
   # Required: URL of the Prisma Cloud instance exclusing the protocol.
   # https://pan.dev/prismacloud-cloud/api/cspm/api-urls/
-  #url = "api.anz.prismacloud.io"
+  # url = "api.anz.prismacloud.io"
 
   # Using username, password authentication
   # Username for authentication.
@@ -16,8 +16,8 @@ connection "prismacloud" {
   # JSON Web Token for authentication.
   # token = "eyJhbGciOiJIUzI1NiJ9.eyJhY2Nlc3NLZXlJZCI6IjA4YWQzOTNmL...H6BNc_Xonw"
 
-  # # Customer name for the Prisma Cloud account.
-  # customer_name = "My Name - 839236897770856499033"
+  # Customer name for the Prisma Cloud account.
+  # customer_name = "My Name - 123236897770856499123"
 
   # Protocol to be used (http or https).
   # protocol = "https"
