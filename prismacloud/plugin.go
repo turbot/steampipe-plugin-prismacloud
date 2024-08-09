@@ -26,9 +26,9 @@ func Plugin(ctx context.Context) *plugin.Plugin {
 			},
 		},
 		TableMap: map[string]*plugin.Table{
-			"prismacloud_account":    tablePrismacloudAccount(ctx),
-			"prismacloud_alert":      tablePrismacloudAlert(ctx),
-			"prismacloud_alert_rule": tablePrismacloudAlertRule(ctx),
+			"prismacloud_account":                                  tablePrismacloudAccount(ctx),
+			"prismacloud_alert":                                    tablePrismacloudAlert(ctx),
+			"prismacloud_alert_rule":                               tablePrismacloudAlertRule(ctx),
 			"prismacloud_compliance_breakdown_requirement_summary": tablePrismacloudComplianceBreakdownRequirementSummary(ctx),
 			"prismacloud_compliance_breakdown_statistic":           tablePrismacloudComplianceBreakdownStatistic(ctx),
 			"prismacloud_compliance_breakdown_summary":             tablePrismacloudComplianceBreakdownSummary(ctx),
