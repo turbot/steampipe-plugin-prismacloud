@@ -45,7 +45,8 @@ func tablePrismacloudAccount(ctx context.Context) *plugin.Table {
 			{
 				Name:        "last_modified_ts",
 				Description: "The timestamp of the last modification.",
-				Type:        proto.ColumnType_INT,
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("LastModifiedTs").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "last_modified_by",

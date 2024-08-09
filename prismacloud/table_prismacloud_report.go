@@ -59,7 +59,8 @@ func tablePrismacloudReport(ctx context.Context) *plugin.Table {
 			{
 				Name:        "created_on",
 				Description: "The timestamp when the report was created.",
-				Type:        proto.ColumnType_INT,
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("CreatedOn").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "created_by",
@@ -69,7 +70,8 @@ func tablePrismacloudReport(ctx context.Context) *plugin.Table {
 			{
 				Name:        "last_modified_on",
 				Description: "The timestamp of the last modification.",
-				Type:        proto.ColumnType_INT,
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("LastModifiedOn").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "last_modified_by",
@@ -79,12 +81,14 @@ func tablePrismacloudReport(ctx context.Context) *plugin.Table {
 			{
 				Name:        "next_schedule",
 				Description: "The timestamp of the next scheduled run.",
-				Type:        proto.ColumnType_INT,
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("NextSchedule").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "last_scheduled",
 				Description: "The timestamp of the last scheduled run.",
-				Type:        proto.ColumnType_INT,
+				Type:        proto.ColumnType_TIMESTAMP,
+				Transform:   transform.FromField("LastSchedule").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
 				Name:        "total_instance_count",
