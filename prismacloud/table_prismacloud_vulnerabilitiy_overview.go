@@ -14,32 +14,32 @@ import (
 func tablePrismacloudVulnerabilitiyOverview(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "prismacloud_vulnerabilitiy_overview",
-		Description: "The overview summary of vulnerabilitiy.",
+		Description: "Provides an overview summary of vulnerabilities in the environment.",
 		List: &plugin.ListConfig{
 			Hydrate: getPrismacloudVulnerabilitiyOverview,
 		},
 		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "total_vulnerable_runtime_assets",
-				Description: "The name of the standard.",
+				Description: "The total number of runtime assets that are vulnerable.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("OverviewSummary.TotalVulnerableRuntimeAssets"),
 			},
 			{
 				Name:        "total_vulnerabilitiesin_runtime",
-				Description: "The unique identifier for the standard.",
+				Description: "The total number of vulnerabilities identified in runtime.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("OverviewSummary.TotalVulnerabilitiesinRuntime"),
 			},
 			{
 				Name:        "total_remediated_in_runtime",
-				Description: "The number of policies assigned to the standard.",
+				Description: "The total number of vulnerabilities that have been remediated in runtime.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("OverviewSummary.TotalRemediatedInRuntime"),
 			},
 			{
 				Name:        "values",
-				Description: "Indicates if the standard is a system default.",
+				Description: "Additional details related to the vulnerability overview.",
 				Type:        proto.ColumnType_JSON,
 			},
 		}),
