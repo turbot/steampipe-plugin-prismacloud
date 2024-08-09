@@ -1,0 +1,31 @@
+## v0.0.1 [2021-08-05]
+
+_What's new?_
+
+- New tables added
+  - [prismacloud_account](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_account)
+  - [prismacloud_alert](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_alert)
+  - [prismacloud_alert_rule](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_alert_rule)
+  - [prismacloud_compliance_breakdown_requirement_summary](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_compliance_breakdown_requirement_summary)
+  - [prismacloud_compliance_breakdown_statistic](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_compliance_breakdown_statistic)
+  - [prismacloud_compliance_breakdown_summary](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_compliance_breakdown_summary)
+  - [prismacloud_compliance_requirement](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_compliance_requirement)
+  - [prismacloud_compliance_standard](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_compliance_standard)
+  - [prismacloud_iam_permission](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_iam_permission)
+  - [prismacloud_iam_role](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_iam_role)
+  - [prismacloud_iam_user](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_iam_user)
+  - [prismacloud_inventory_api_endpoint](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_inventory_api_endpoint)
+  - [prismacloud_inventory_asset_explorer](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_inventory_asset_explorer)
+  - [prismacloud_inventory_asset_view](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_inventory_asset_view)
+  - [prismacloud_inventory_workload](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_inventory_workload)
+  - [prismacloud_inventory_workload_container_image](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_inventory_workload_container_image)
+  - [prismacloud_inventory_workload_host](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_inventory_workload_host)
+  - [prismacloud_permission_group](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_permission_group)
+  - [prismacloud_policy](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_policy)
+  - [prismacloud_prioritized_vulnerabilitiy](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_prioritized_vulnerabilitiy)
+  - [prismacloud_report](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_report)
+  - [prismacloud_resource](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_resource)
+  - [prismacloud_trusted_alert_ip](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_trusted_alert_ip)
+  - [prismacloud_vulnerabilitiy_asset](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_vulnerabilitiy_asset)
+  - [prismacloud_vulnerabilitiy_burndown](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_vulnerabilitiy_burndown)
+  - [prismacloud_vulnerabilitiy_overview](https://hub.steampipe.io/plugins/turbot/prismacloud/tables/prismacloud_vulnerabilitiy_overview)
