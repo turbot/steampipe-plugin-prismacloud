@@ -36,7 +36,7 @@ from
   prismacloud_resource;
 ```
 
-### List of Resources Modified by a Specific User
+### List of resources modified by a specific user
 Get a list of all resources that were last modified by a specific user. This is useful for tracking changes made by administrators or team members.
 
 ```sql+postgres
@@ -63,7 +63,7 @@ where
   last_modified_by = 'admin_user';
 ```
 
-### Resources with Specific Types
+### Resources with specific types
 Identify resources of a specific type. This helps in organizing and managing different categories of resources within Prisma Cloud.
 
 ```sql+postgres
@@ -88,8 +88,7 @@ where
   resource_list_type = 'compute';
 ```
 
-### Resources Without a Description
-
+### Resources without a description
 Identify resources that are missing a description to ensure all assets are well-documented.
 
 ```sql+postgres
@@ -114,7 +113,7 @@ where
   description is null or description = '';
 ```
 
-### Get Members Associated with Each Resource
+### Get members associated with each resource
 Retrieve details about members associated with each resource. This can help in understanding who has access to which resources.
 
 ```sql+postgres
@@ -135,7 +134,7 @@ from
   prismacloud_resource;
 ```
 
-### Count of Resources by Type
+### Count of resources by type
 Get a count of resources by their type to understand the distribution of different resource types within your environment.
 
 ```sql+postgres
