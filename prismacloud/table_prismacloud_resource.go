@@ -23,27 +23,27 @@ func tablePrismacloudResource(ctx context.Context) *plugin.Table {
 		Columns: commonColumns([]*plugin.Column{
 			{
 				Name:        "id",
-				Description: "The unique identifier for the permission group.",
+				Description: "The unique identifier for the resource.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "name",
-				Description: "The name of the permission group.",
+				Description: "The name of the resource.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "description",
-				Description: "The description of the permission group.",
+				Description: "The description of the resource.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
-				Name:        "type",
-				Description: "The type of the permission group.",
+				Name:        "resource_list_type",
+				Description: "The type of the resource.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
 				Name:        "last_modified_by",
-				Description: "The user who last modified the permission group.",
+				Description: "The user who last modified the resource.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -53,46 +53,15 @@ func tablePrismacloudResource(ctx context.Context) *plugin.Table {
 				Transform:   transform.FromField("LastModifiedTs").Transform(transform.NullIfZeroValue).Transform(transform.UnixMsToTimestamp),
 			},
 			{
-				Name:        "accept_account_groups",
-				Description: "Indicates if the permission group accepts account groups.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "accept_resource_lists",
-				Description: "Indicates if the permission group accepts resource lists.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "accept_code_repositories",
-				Description: "Indicates if the permission group accepts code repositories.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "custom",
-				Description: "Indicates if the permission group is custom.",
-				Type:        proto.ColumnType_BOOL,
-			},
-			{
-				Name:        "deleted",
-				Description: "Indicates if the permission group has been deleted.",
-				Type:        proto.ColumnType_BOOL,
-			},
-
-			{
-				Name:        "associated_roles",
-				Description: "The roles associated with the permission group.",
-				Type:        proto.ColumnType_JSON,
-			},
-			{
-				Name:        "features",
-				Description: "The features associated with the permission group.",
+				Name:        "members",
+				Description: "The members associated with the resource.",
 				Type:        proto.ColumnType_JSON,
 			},
 
 			// Steampipe standard column
 			{
 				Name:        "title",
-				Description: "Title of the permission group.",
+				Description: "Title of the resource.",
 				Type:        proto.ColumnType_STRING,
 				Transform:   transform.FromField("Name"),
 			},

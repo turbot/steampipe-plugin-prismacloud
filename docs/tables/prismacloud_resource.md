@@ -1,29 +1,27 @@
 ---
 title: "Steampipe Table: prismacloud_resource - Query Prisma Cloud resources using SQL"
-description: "Allows users to query Prisma Cloud resources. This table provides information about each resource, including its name, type, associated roles, and more. It can be used to monitor and manage resources within Prisma Cloud."
+description: "Allows users to query resources in Prisma Cloud. This table provides detailed information about each resource, including its name, ID, type, and more. It can be used to manage and audit resources within Prisma Cloud."
 ---
 
 # Table: prismacloud_resource - Query Prisma Cloud resources using SQL
 
-The Prisma Cloud resource table in Steampipe provides you with information about resources within Prisma Cloud. This table allows you, as a security engineer or cloud administrator, to query resource-specific details, including resource name, type, associated roles, and more. You can utilize this table to gather insights on resources, such as their configurations, associated features, and more. The schema outlines the various attributes of the Prisma Cloud resource for you, including the resource ID, name, and associated roles.
+The `prismacloud_resource` table in Steampipe provides you with information about resources within Prisma Cloud. This table allows security engineers, cloud administrators, and compliance officers to query resource-specific details, including the resource's name, ID, description, and associated metadata. You can utilize this table to gather insights on resources, such as their modification history, associated members, and types. The schema outlines various attributes of the Prisma Cloud resource, including the resource ID, name, and last modification details.
 
 ## Table Usage Guide
 
-The `prismacloud_resource` table in Steampipe provides information about resources within Prisma Cloud. This table allows you to query details such as the resource's name, type, associated roles, and more, enabling you to manage and monitor your resources effectively.
+The `prismacloud_resource` table in Steampipe provides detailed information about resources within Prisma Cloud. This table allows you to query details such as the resource's name, ID, description, and modification history, enabling you to effectively manage and audit your resources.
 
 ## Examples
 
-### Basic Info
-
+### Basic info
 Retrieve basic information about Prisma Cloud resources, such as resource ID, name, type, and description. This query helps you to understand the overall configuration and details of your resources.
 
 ```sql+postgres
 select
   id,
   name,
-  type,
-  description,
-  custom
+  resource_list_type,
+  description
 from
   prismacloud_resource;
 ```
@@ -32,42 +30,14 @@ from
 select
   id,
   name,
-  type,
-  description,
-  custom
+  resource_list_type,
+  description
 from
   prismacloud_resource;
 ```
 
-### List of custom resources
-
-Get a list of all custom Prisma Cloud resources. This is useful for identifying which resources are custom-defined.
-
-```sql+postgres
-select
-  id,
-  name,
-  description
-from
-  prismacloud_resource
-where
-  custom = true;
-```
-
-```sql+sqlite
-select
-  id,
-  name,
-  description
-from
-  prismacloud_resource
-where
-  custom = 1;
-```
-
-### Resources modified by a specific user
-
-Identify resources that were last modified by a specific user. This helps in tracking changes made by administrators or other users.
+### List of resources modified by a specific user
+Get a list of all resources that were last modified by a specific user. This is useful for tracking changes made by administrators or team members.
 
 ```sql+postgres
 select
@@ -93,41 +63,64 @@ where
   last_modified_by = 'admin_user';
 ```
 
-### Resources accepting resource lists
-
-Retrieve resources where resource lists are accepted. This helps in understanding the configurations related to resource list acceptance in your resources.
+### Resources with specific types
+Identify resources of a specific type. This helps in organizing and managing different categories of resources within Prisma Cloud.
 
 ```sql+postgres
 select
   id,
   name,
-  accept_resource_lists
+  resource_list_type
 from
   prismacloud_resource
 where
-  accept_resource_lists = true;
+  resource_list_type = 'compute';
 ```
 
 ```sql+sqlite
 select
   id,
   name,
-  accept_resource_lists
+  resource_list_type
 from
   prismacloud_resource
 where
-  accept_resource_lists = 1;
+  resource_list_type = 'compute';
 ```
 
-### Resources and their associated roles
-
-Get a list of resources along with their associated roles. This can help in understanding the role assignments within your cloud environment.
+### Resources without a description
+Identify resources that are missing a description to ensure all assets are well-documented.
 
 ```sql+postgres
 select
   id,
   name,
-  associated_roles
+  description
+from
+  prismacloud_resource
+where
+  description is null or description = '';
+```
+
+```sql+sqlite
+select
+  id,
+  name,
+  description
+from
+  prismacloud_resource
+where
+  description is null or description = '';
+```
+
+### Get members associated with each resource
+Retrieve details about members associated with each resource. This can help in understanding who has access to which resources.
+
+```sql+postgres
+select
+  id,
+  name,
+  members
 from
   prismacloud_resource;
 ```
@@ -136,7 +129,30 @@ from
 select
   id,
   name,
-  associated_roles
+  members
 from
   prismacloud_resource;
+```
+
+### Count of resources by type
+Get a count of resources by their type to understand the distribution of different resource types within your environment.
+
+```sql+postgres
+select
+  resource_list_type,
+  count(*) as resource_count
+from
+  prismacloud_resource
+group by
+  resource_list_type;
+```
+
+```sql+sqlite
+select
+  resource_list_type,
+  count(*) as resource_count
+from
+  prismacloud_resource
+group by
+  resource_list_type;
 ```

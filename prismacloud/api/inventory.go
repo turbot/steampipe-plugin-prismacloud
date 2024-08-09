@@ -12,9 +12,11 @@ import (
 	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/model"
 )
 
+// This API is not documented.
+// It was obtained by inspecting the Prisma Cloud console.
 func ListInventoryDiscoveredAPI(c *prismacloud.Client, req map[string]interface{}) (*model.InventoryDiscoveredAPIResponse, error) {
-	c.Log(prismacloud.LogAction, "list of %s", "inventory api endpoints")
 	// https://api.anz.prismacloud.io/waas-api-discovery/api/v1/discovered-api
+	c.Log(prismacloud.LogAction, "list of %s", "inventory api endpoints")
 	var apis model.InventoryDiscoveredAPIResponse
 	if _, err := c.Communicate("POST", []string{"waas-api-discovery", "api", "v1", "discovered-api"}, nil, req, &apis); err != nil {
 		return nil, err
