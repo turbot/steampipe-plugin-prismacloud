@@ -2,7 +2,7 @@
 organization: Turbot
 category: ["software development"]
 icon_url: "/images/plugins/turbot/prismacloud.svg"
-brand_color: "#EF5B0C"
+brand_color: "#00BFE7"
 display_name: "Prisma Cloud"
 short_name: "prismacloud"
 description: "Steampipe plugin for querying Prisma Cloud accounts, alerts, users, and other resources."
