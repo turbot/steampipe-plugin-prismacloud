@@ -1,3 +1,14 @@
+## v0.1.0 [2024-09-19]
+
+_Bug fixes_
+
+- Fixed the typo in the `prismacloud_vulnerability*` tables. ([#13](https://github.com/turbot/steampipe-plugin-prismacloud/pull/13))
+
+_Dependencies_
+
+- Recompiled plugin with Go version `1.22`. ([#11](https://github.com/turbot/steampipe-plugin-prismacloud/pull/11))
+- Recompiled plugin with [steampipe-plugin-sdk v5.10.4](https://github.com/turbot/steampipe-plugin-sdk/blob/develop/CHANGELOG.md#v5104-2024-08-29) that fixes logging in the plugin export tool. ([#11](https://github.com/turbot/steampipe-plugin-prismacloud/pull/11))
+
 ## v0.0.2 [2024-08-09]
 
 _Bug fixes_
