@@ -8,10 +8,10 @@ import (
 	"github.com/paloaltonetworks/prisma-cloud-go/policy"
 	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/api"
 	"github.com/turbot/steampipe-plugin-prismacloud/prismacloud/model"
-	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
-	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
+	"github.com/turbot/steampipe-plugin-sdk/v6/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v6/query_cache"
 )
 
 func tablePrismacloudPolicy(ctx context.Context) *plugin.Table {

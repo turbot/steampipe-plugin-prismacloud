@@ -61,7 +61,7 @@ func GetInventoryWorkloads(authToken string) (*model.InventoryWorkload, error) {
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
@@ -115,7 +115,7 @@ func GetInventoryWorkloadContainerImages(authToken string, nextPageToken string)
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
@@ -168,7 +168,7 @@ func GetInventoryWorkloadHosts(authToken string, nextPageToken string) (*model.W
 	if err != nil {
 		return nil, fmt.Errorf("failed to make request: %w", err)
 	}
-	defer resp.Body.Close()
+	defer func() { _ = resp.Body.Close() }()
 
 	// Read the response body
 	body, err := io.ReadAll(resp.Body)
