@@ -6,10 +6,10 @@ import (
 
 	"github.com/paloaltonetworks/prisma-cloud-go/alert"
 	"github.com/paloaltonetworks/prisma-cloud-go/timerange"
-	"github.com/turbot/steampipe-plugin-sdk/v5/grpc/proto"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
-	"github.com/turbot/steampipe-plugin-sdk/v5/query_cache"
+	"github.com/turbot/steampipe-plugin-sdk/v6/grpc/proto"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin"
+	"github.com/turbot/steampipe-plugin-sdk/v6/plugin/transform"
+	"github.com/turbot/steampipe-plugin-sdk/v6/query_cache"
 )
 
 func tablePrismacloudAlert(ctx context.Context) *plugin.Table {
@@ -317,7 +317,7 @@ func getAlertStartTImeAndSearchEndTime(keyQuals *plugin.QueryData) (int64, int64
 
 	st, et := int64(0), int64(0)
 
-	if keyQuals.Quals["alert_time"] != nil && !(len(keyQuals.Quals["alert_time"].Quals) > 1) {
+	if keyQuals.Quals["alert_time"] != nil && len(keyQuals.Quals["alert_time"].Quals) <= 1 {
 		for _, q := range keyQuals.Quals["alert_time"].Quals {
 			t := q.Value.GetTimestampValue().AsTime()
 			switch q.Operator {
